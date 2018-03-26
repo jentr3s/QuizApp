@@ -1,25 +1,23 @@
-<div class="jumbotron">
-  <div class="container">
-    <h1 class="text-center">
-      <i class="fa fa-cube" aria-hidden="true"></i>
-      My Quiz
-    </h1>
+<div *ngIf="showHeader">
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="text-center">
+        <i class="fa fa-cube" aria-hidden="true"></i>
+        My Quiz
+      </h1>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-7">
-    <button class="btn btn-success pull-right" (click)="launchQuiz()">Launch Quiz</button>
-    
-    <ul>
-      <li><a routerLink="">Home</a></li>
-      <li><a routerLink="settings">About</a></li>
-    </ul>
-  </div>
-  <div class="col-md-4">
-    <button class="btn btn-secondary" (click)="btnSettings()">
-      <i class="fa fa-cog" aria-hidden="true"></i>
-    </button>
-  </div>
-</div>
+  <div class="row">
+    <div class="col-md-7">
+      <button class="btn btn-success pull-right" (click)="launchQuiz()">Launch Quiz</button>
+    </div>
 
+    <div class="col-md-4">
+      <button class="btn btn-secondary" (click)="sendToSettings()">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+      </button>
+
+    </div>
+  </div>
+</div>
 <router-outlet></router-outlet>
