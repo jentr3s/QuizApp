@@ -1,6 +1,15 @@
 <div *ngIf="!showMainPage">
-  <p>
-    home works!
-  </p>
+  <!-- Place quiz title here -->
+  <h2 class="text-center">
+    Quiz title here
+  </h2>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="studentName">Please Enter Your Name</label>
+      <input type="name" class="form-control" id="inputName" aria-describedby="inputNameHelp" placeholder="Enter your name">
+    </div>
+  </div>
+
   <button class="btn btn-success pull-right" (click)="back()">Back</button>
 </div>
