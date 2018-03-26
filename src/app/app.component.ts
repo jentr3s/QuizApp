@@ -9,22 +9,22 @@ import { SharedService } from './shared.service';
 })
 export class AppComponent implements OnInit {
 
-  public showHeader: boolean = true;
+  public showMainPage: boolean = true;
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
   ngOnInit() {
-    this.sharedService.header.subscribe(res => this.showHeader = res);
-    this.sharedService.changeHeader(this.showHeader);
+    this.sharedService.mainPage.subscribe(res => this.showMainPage = res);
+    this.sharedService.changeMainPage(this.showMainPage);
   }
 
   sendToSettings() {
-    this.sharedService.changeHeader(this.showHeader = false);
+    this.sharedService.changeMainPage(this.showMainPage = false);
     this.router.navigate(['settings']);
   }
 
   launchQuiz() {
-    this.sharedService.changeHeader(this.showHeader = false);
+    this.sharedService.changeMainPage(this.showMainPage = false);
     this.router.navigate(['']);
   }
 }

@@ -4,12 +4,12 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class SharedService {
 
-  private showHeader = new BehaviorSubject<boolean>(true);
-  header = this.showHeader.asObservable();
+  private isMainPage = new BehaviorSubject<boolean>(true);
+  mainPage = this.isMainPage.asObservable();
 
   constructor() { }
 
-  changeHeader(header){
-    this.showHeader.next(header);
+  changeMainPage(header){
+    this.isMainPage.next(header);
   }
 }

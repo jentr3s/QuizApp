@@ -8,17 +8,17 @@ import { SharedService } from '../shared.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public showHeader: boolean = false;
+  public showMainPage: boolean = false;
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
   ngOnInit() {
-    this.sharedService.header.subscribe(res => this.showHeader = res);
-    this.sharedService.changeHeader(this.showHeader);
+    this.sharedService.mainPage.subscribe(res => this.showMainPage = res);
+    this.sharedService.changeMainPage(this.showMainPage);
   }
 
   back(){
-    this.sharedService.changeHeader(this.showHeader = true);
+    this.sharedService.changeMainPage(this.showMainPage = true);
     
     this.router.navigate(['']);
     
