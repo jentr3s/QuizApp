@@ -15,7 +15,7 @@ function createWindow () {
   }))
 
   // database connection
-  // let connectToServer = require('./src/server/server.js');
+  let connectToServer = require('./src/server/server.js');
 
   // Open the DevTools optionally:
   // win.webContents.openDevTools()
