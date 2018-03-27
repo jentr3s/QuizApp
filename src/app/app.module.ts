@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { SharedService } from './shared.service';
@@ -19,6 +20,7 @@ import { SettingsComponent } from './settings/settings.component';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
 
     NgbModule.forRoot()

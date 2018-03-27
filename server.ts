@@ -24,9 +24,19 @@ function createWindow() {
     // Open the DevTools optionally:
     // win.webContents.openDevTools()
 
+    ipcMain.on("login", (event, arg) => {
+        let result = knex('Users').where({
+            Username: arg.username,
+            Password: arg.password
+        }).select('Name', 'PermissionType')
+        result.then((res) => {
+            win.webContents.send("userDetails", res[0]);
+        })
+    })
+
     ipcMain.on("loadUsers", () => {
         let result = knex.select("Name").from("Users")
-        result.then(function (rows) {
+        result.then((rows) => {
             win.webContents.send("userList", rows);
         })
     });

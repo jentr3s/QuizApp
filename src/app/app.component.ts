@@ -11,7 +11,6 @@ declare let electron: any;
 export class AppComponent implements OnInit {
 
   public showMainPage: boolean = true;
-  public title = 'my app';
   public ipc = electron.ipcRenderer;
   public list: Array<string>;
 

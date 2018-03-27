@@ -2,7 +2,7 @@
   "name": "quiz-app",
   "version": "0.0.0",
   "license": "MIT",
-  "main": "main.ts",
+  "main": "server.ts",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
