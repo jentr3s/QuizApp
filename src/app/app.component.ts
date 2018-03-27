@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     me.ipc.send("loadUsers")
 
     // this method listens to userList
-    me.ipc.on("userList", function (evt, result) {
+    me.ipc.on("userList", (evt, result) => {
       me.list = [];
       for (var i = 0; i < result.length; i++) {
         me.list.push(result[i].Name.toString());
@@ -49,12 +49,13 @@ export class AppComponent implements OnInit {
   insertInOptions() {
     // Load user details
     let opt = this;
-    opt.ipc.send("insertInOptions")
+
+    let optData = { Name: 'Chicken', QuestionId: 1 };
+    opt.ipc.send("insertInOptions", optData)
 
     // this method listens to insertOptions
-    opt.ipc.on("insertedId", function (evt, result) {
+    opt.ipc.on("insertedId", (evt, result) => {
       console.log(result);
-      opt.ref.detectChanges()
     });
 
   }
