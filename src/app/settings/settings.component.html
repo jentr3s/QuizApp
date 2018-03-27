@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!showSettingsPage">
   <div class="card bg-light mb-6" style="max-width: 20rem;">
     <div class="card-header">Please login</div>
     <div class="card-body">
@@ -18,4 +18,15 @@
       </form>
     </div>
   </div>
+</div>
+
+<div *ngIf="showSettingsPage">
+  <h2>List of Quizzes</h2>
+
+  <ul class="list-group">
+    <a href="#" class="list-group-item list-group-item-action">Quiz1
+    </a>
+    <a href="#" class="list-group-item list-group-item-action disabled">Morbi leo risus
+    </a>
+  </ul>
 </div>

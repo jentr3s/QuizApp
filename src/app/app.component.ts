@@ -17,8 +17,8 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private sharedService: SharedService, private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.sharedService.mainPage.subscribe(res => this.showMainPage = res);
-    this.sharedService.changeMainPage(this.showMainPage);
+    // this.sharedService.mainPage.subscribe(res => this.showMainPage = res);
+    // this.sharedService.changeMainPage(this.showMainPage);
 
     // Load user details
     let me = this;
@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
       }
       me.ref.detectChanges()
     });
-
   }
 
   sendToSettings() {

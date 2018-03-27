@@ -24,6 +24,7 @@ function createWindow() {
     // Open the DevTools optionally:
     // win.webContents.openDevTools()
 
+    // Login
     ipcMain.on("login", (event, arg) => {
         let result = knex('Users').where({
             Username: arg.username,
@@ -34,6 +35,25 @@ function createWindow() {
         })
     })
 
+    // Load Quizzes
+    ipcMain.on("loadQuizzes", () => {
+        let quizList = [];
+
+        let result = knex.select("Name", "Description", "PreparedBy", "IsActive").from("Quizzes")
+        result.then((quizzes) => {
+            for (var i = 0; i < quizzes.length; i++) {
+                let items = knex.from('Items').innerJoin('Quizzes', 'Items.QuizId', quizzes[i].Id)
+                items.then((item) => {
+                    quizList.push(quizzes[i].Name, quizzes[i].Description, quizzes[i].PreparedBy, quizzes[i].IsActive, "Count" + item.length);
+                })
+            }
+
+            win.webContents.send("quizzesList", quizList);
+        })
+    });
+
+
+    // Load users
     ipcMain.on("loadUsers", () => {
         let result = knex.select("Name").from("Users")
         result.then((rows) => {
