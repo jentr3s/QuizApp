@@ -23,6 +23,9 @@
     <h1>
       List of users
     </h1>
+
+    <button class="btn btn-success pull-right" (click)="insertInOptions()">Insert in options</button>
+    
     <ul *ngIf="list">
       <li *ngFor="let name of list">{{name}}</li>
     </ul>

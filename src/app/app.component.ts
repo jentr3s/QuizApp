@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
     // Load user details
     let me = this;
-    me.ipc.send("mainWindowLoaded")
+    me.ipc.send("loadUsers")
 
     // this method listens to userList
     me.ipc.on("userList", function (evt, result) {
@@ -44,5 +44,18 @@ export class AppComponent implements OnInit {
   launchQuiz() {
     this.sharedService.changeMainPage(this.showMainPage = false);
     this.router.navigate(['']);
+  }
+
+  insertInOptions() {
+    // Load user details
+    let opt = this;
+    opt.ipc.send("insertInOptions")
+
+    // this method listens to insertOptions
+    opt.ipc.on("insertedId", function (evt, result) {
+      console.log(result);
+      opt.ref.detectChanges()
+    });
+
   }
 }

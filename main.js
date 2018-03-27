@@ -27,10 +27,18 @@ function createWindow() {
   // Open the DevTools optionally:
   // win.webContents.openDevTools()
 
-  ipcMain.on("mainWindowLoaded", function () {
+  ipcMain.on("loadUsers", function () {
     let result = knex.select("Name").from("Users")
     result.then(function (rows) {
       win.webContents.send("userList", rows);
+    })
+  });
+
+  ipcMain.on("insertInOptions", function () {
+    let opt = { Name: 'Chicken', QuestionId: 1 };
+    let result = knex.insert(opt).into("Options")
+    result.then(function (id) {
+      win.webContents.send("insertedId", id);
     })
   });
 
