@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from './shared.service';
+declare let electron: any;
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,29 @@ import { SharedService } from './shared.service';
 export class AppComponent implements OnInit {
 
   public showMainPage: boolean = true;
+  public title = 'my app';
+  public ipc = electron.ipcRenderer;
+  public list: Array<string>;
 
-  constructor(private router: Router, private sharedService: SharedService) { }
+  constructor(private router: Router, private sharedService: SharedService, private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.sharedService.mainPage.subscribe(res => this.showMainPage = res);
     this.sharedService.changeMainPage(this.showMainPage);
+
+    // Load user details
+    let me = this;
+    me.ipc.send("mainWindowLoaded")
+
+    // this method listens to userList
+    me.ipc.on("userList", function (evt, result) {
+      me.list = [];
+      for (var i = 0; i < result.length; i++) {
+        me.list.push(result[i].Name.toString());
+      }
+      me.ref.detectChanges()
+    });
+
   }
 
   sendToSettings() {

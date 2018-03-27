@@ -1,5 +1,5 @@
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./src/server/QuizAppDb');
+var db = new sqlite3.Database('./src/server/QuizAppDb.sql');
 
 db.serialize(function() {
     db.run("CREATE TABLE lorem (info TEXT)");
