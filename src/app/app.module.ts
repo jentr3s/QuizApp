@@ -10,13 +10,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HomeComponent } from './home/home.component';
 import { SettingsComponent } from './settings/settings.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    SettingsComponent
+    SettingsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

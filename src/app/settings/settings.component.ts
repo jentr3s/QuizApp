@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../shared.service';
+import { Router } from '@angular/router';
 
 declare let electron: any;
 
@@ -10,51 +11,48 @@ declare let electron: any;
 })
 export class SettingsComponent implements OnInit {
 
-  public showSettingsPage: boolean = false;
   public ipc = electron.ipcRenderer;
-
-  // Model username and password
-  username: string;
-  password: string;
-  userDetail = null;
-
-  constructor(private sharedService: SharedService) { }
+  userInfo = [];
+  constructor(private sharedService: SharedService, private router: Router) { }
 
   ngOnInit() {
-  }
+    this.sharedService.loginUser.subscribe(res => this.userInfo = res[0]);
+    this.sharedService.changeLoginValue(this.userInfo);
 
-  login() {
-    let log = this;
-    let data = { username: this.username, password: this.password };
-
-    log.ipc.send("login", data)
-
-    // this method listens to insertOptions
-    log.ipc.on("userDetails", (evt, result) => {
-      this.userDetail = result;
-      console.log(this.userDetail);
-
-      if (this.userDetail != null) {
-        this.sharedService.changeMainPage(this.showSettingsPage = true);
-        this.loadQuizzes();
-
-      }
-      else {
-        console.log("Failed to login!");
-      }
-
-    })
+    this.sharedService.test.subscribe(res => console.log("test: " + res));
+    
+    
   }
 
   loadQuizzes() {
-    // Load user details
+    // Load quizzes
     let quiz = this;
+    let quizList = [];
     quiz.ipc.send("loadQuizzes")
 
     // this method listens to userList
-    quiz.ipc.on("quizzesList", (evt, result) => {
-      console.log(result);
+    quiz.ipc.on("quizzesList", (evt, quizzes) => {
+      this.loadItems(quizzes);
     });
 
+  }
+
+  loadItems(quizzes) {
+    let quiz = this;
+    let quizList = [];
+    for (var i = 0; i < quizzes.length; i++) {
+      var itemCount = 0;
+      var id = quizzes[i].Id;
+      quiz.ipc.send("loadItems", id)
+      quiz.ipc.on("itemList", (evt, items) => {
+        if (items.length !== 0) {
+          itemCount = items.length;
+          console.log(items);
+        }
+      })
+
+      quizList.push({ Quiz: quizzes[i], ItemCount: itemCount });
+    }
+    // console.log(quizList);
   }
 }

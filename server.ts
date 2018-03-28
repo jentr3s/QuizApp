@@ -29,28 +29,30 @@ function createWindow() {
         let result = knex('Users').where({
             Username: arg.username,
             Password: arg.password
-        }).select('Name', 'PermissionType')
+        }).select('Id', 'Name', 'Username', 'PermissionType')
         result.then((res) => {
-            win.webContents.send("userDetails", res[0]);
+            win.webContents.send("userDetails", res);
         })
     })
 
     // Load Quizzes
     ipcMain.on("loadQuizzes", () => {
-        let quizList = [];
-
-        let result = knex.select("Name", "Description", "PreparedBy", "IsActive").from("Quizzes")
+        let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
         result.then((quizzes) => {
-            for (var i = 0; i < quizzes.length; i++) {
-                let items = knex.from('Items').innerJoin('Quizzes', 'Items.QuizId', quizzes[i].Id)
-                items.then((item) => {
-                    quizList.push(quizzes[i].Name, quizzes[i].Description, quizzes[i].PreparedBy, quizzes[i].IsActive, "Count" + item.length);
-                })
-            }
-
-            win.webContents.send("quizzesList", quizList);
+            win.webContents.send("quizzesList", quizzes);
         })
     });
+
+    ipcMain.on("loadItems", (event, arg) => {
+        let items = knex('Items').where({
+            QuizId: arg
+        }).select('Id', 'Name', 'QuestionTypeId', 'Answer', 'QuizId')
+        items.then((items) => {
+            win.webContents.send("itemList", items);
+        })
+    })
+
+
 
 
     // Load users
