@@ -32,7 +32,9 @@ function createWindow() {
         }).select('Id', 'Name', 'Username', 'PermissionType')
         result.then((res) => {
             win.webContents.send("userDetails", res);
-        })
+        }).finally(function () {
+                knex.destroy();
+            });
     })
 
     // Load Quizzes

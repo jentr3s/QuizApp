@@ -3,7 +3,7 @@
     <div class="card-header">Please login</div>
     <div class="card-body">
 
-      <form (ngSubmit)="login()">
+      <form>
         <fieldset>
           <div class="form-group">
             <label for="txtUsername">Username</label>
@@ -13,7 +13,7 @@
             <label for="txtPassword">Password</label>
             <input type="password" [(ngModel)]="password" name="password" class="form-control" id="txtPassword">
           </div>
-          <button type="submit" class="btn btn-primary" (click)="login()">Login</button>
+          <button type="button" class="btn btn-primary" (click)="login()">Login</button>
         </fieldset>
       </form>
 

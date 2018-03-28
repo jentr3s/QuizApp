@@ -12,16 +12,17 @@ declare let electron: any;
 export class SettingsComponent implements OnInit {
 
   public ipc = electron.ipcRenderer;
-  userInfo = [];
+  userInfo: any;
+
+  // Model username and password
+  username: string;
+  password: string;
   constructor(private sharedService: SharedService, private router: Router) { }
 
   ngOnInit() {
-    this.sharedService.loginUser.subscribe(res => this.userInfo = res[0]);
-    this.sharedService.changeLoginValue(this.userInfo);
+    this.sharedService.loginUser.subscribe(res => this.userInfo = res);
 
-    this.sharedService.test.subscribe(res => console.log("test: " + res));
-    
-    
+    console.log("logged in? :" + this.userInfo);
   }
 
   loadQuizzes() {
@@ -54,5 +55,20 @@ export class SettingsComponent implements OnInit {
       quizList.push({ Quiz: quizzes[i], ItemCount: itemCount });
     }
     // console.log(quizList);
+  }
+
+  changeIsMainPage() {
+    this.sharedService.changeMainPage(true);
+  }
+
+  showPage(data: boolean)
+  {
+    this.sharedService.changeIsLoginValue(true);
+
+  }
+  hidePage(data: boolean)
+  {
+    this.sharedService.changeIsLoginValue(false);
+
   }
 }

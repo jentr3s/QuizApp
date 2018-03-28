@@ -11,17 +11,17 @@ declare let electron: any;
 export class LoginComponent implements OnInit {
 
   public ipc = electron.ipcRenderer;
-  userInfo = [];
+  userInfo: any;
 
   // Model username and password
   username: string;
   password: string;
 
+  public showMainPage: boolean;
+
   constructor(private router: Router, private sharedService: SharedService) { }
 
   ngOnInit() {
-    this.sharedService.loginUser.subscribe(res => this.userInfo = res);
-    this.sharedService.changeLoginValue(this.userInfo);
   }
 
 
@@ -33,18 +33,17 @@ export class LoginComponent implements OnInit {
 
     // this method listens to insertOptions
     log.ipc.on("userDetails", (evt, result) => {
-      if (result.length > 0) {
-        this.userInfo.push(result);
-        this.sharedService.changeLoginValue(this.userInfo);
-        this.sharedService.changeTest(true);
-
-        this.router.navigate(['settings']);
-      }
-      else {
-        console.log("Failed to login!");
-      }
-
+      this.userInfo = result[0];
     })
+    
+    if (this.userInfo != null) {
+      this.sharedService.changeLoginValue(this.userInfo);
+      this.router.navigate(['settings']);
+    }
+    else {
+      console.log("Failed to login!");
+    }
+
   }
 
 }

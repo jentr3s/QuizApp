@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Observable } from 'rxjs/Observable';
+
 @Injectable()
 export class SharedService {
 
@@ -10,13 +11,12 @@ export class SharedService {
   mainPage = this.isMainPage.asObservable();
 
   // User who logged in value
-  private userLoggedIn = new BehaviorSubject<any>([]);
+  private userLoggedIn = new BehaviorSubject<object>({ Id: 0, Name: "empty", Username: "empty", PermissionType: "empty" });
   loginUser = this.userLoggedIn.asObservable();
 
-
-  // This is to show main page
-  private testPage = new BehaviorSubject<boolean>(false);
-  test = this.testPage.asObservable();
+   // This is to show main page
+   private isLoggedIn = new BehaviorSubject<boolean>(false);
+   loggedIn = this.isLoggedIn.asObservable();
 
   constructor() { }
 
@@ -28,8 +28,7 @@ export class SharedService {
     this.userLoggedIn.next(data);
   }
 
-  changeTest(data) {
-    this.testPage.next(data);
+  changeIsLoginValue(data) {
+    this.isLoggedIn.next(data)
   }
-
 }
