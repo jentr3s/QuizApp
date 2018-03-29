@@ -31,10 +31,9 @@ function createWindow() {
             Password: arg.password
         }).select('Id', 'Name', 'Username', 'PermissionType')
         result.then((res) => {
-            win.webContents.send("userDetails", res);
-        }).finally(function () {
-                knex.destroy();
-            });
+            // result is always an array
+            event.returnValue = JSON.stringify(res[0])
+        })
     })
 
     // Load Quizzes

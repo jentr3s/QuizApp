@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     })
     
     if (this.userInfo != null) {
-      this.sharedService.changeLoginValue(this.userInfo);
+      this.sharedService.changeLoggedInUserDetail(this.userInfo);
       this.router.navigate(['settings']);
     }
     else {

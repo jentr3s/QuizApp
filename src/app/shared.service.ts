@@ -24,11 +24,11 @@ export class SharedService {
     this.isMainPage.next(data);
   }
 
-  changeLoginValue(data) {
+  changeLoggedInUserDetail(data) {
     this.userLoggedIn.next(data);
   }
 
-  changeIsLoginValue(data) {
+  changeIsLoggedIn(data) {
     this.isLoggedIn.next(data)
   }
 }

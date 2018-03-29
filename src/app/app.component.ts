@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
 
   sendToLogin() {
     this.sharedService.changeMainPage(this.showMainPage = false);
-    this.router.navigate(['login']);
+    this.router.navigate(['settings']);
   }
 
   launchQuiz() {

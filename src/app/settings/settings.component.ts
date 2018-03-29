@@ -11,8 +11,10 @@ declare let electron: any;
 })
 export class SettingsComponent implements OnInit {
 
+  // IPC Renderer
   public ipc = electron.ipcRenderer;
   userInfo: any;
+  isLoggedIn: boolean;
 
   // Model username and password
   username: string;
@@ -20,7 +22,9 @@ export class SettingsComponent implements OnInit {
   constructor(private sharedService: SharedService, private router: Router) { }
 
   ngOnInit() {
-    this.sharedService.loginUser.subscribe(res => this.userInfo = res);
+    // this.sharedService.loginUser.subscribe(res => this.userInfo = res);
+    this.sharedService.loggedIn.subscribe(res => this.isLoggedIn = res);
+
 
     console.log("logged in? :" + this.userInfo);
   }
@@ -57,18 +61,22 @@ export class SettingsComponent implements OnInit {
     // console.log(quizList);
   }
 
-  changeIsMainPage() {
-    this.sharedService.changeMainPage(true);
-  }
+  login() {
+    let log = this;
+    let data = { username: this.username, password: this.password };
 
-  showPage(data: boolean)
-  {
-    this.sharedService.changeIsLoginValue(true);
+    let loggedInUser = log.ipc.sendSync("login", data)
+    this.userInfo = JSON.parse(loggedInUser);
 
-  }
-  hidePage(data: boolean)
-  {
-    this.sharedService.changeIsLoginValue(false);
+    if (this.userInfo != null) {
+      this.isLoggedIn = true;
+      this.sharedService.changeIsLoggedIn(true);
+      this.sharedService.changeLoggedInUserDetail(this.userInfo);
+      
+    }
+    else {
+      console.log("Failed to login!");
+    }
 
   }
 }
