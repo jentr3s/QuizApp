@@ -4,10 +4,12 @@
   <h2>List of Quizzes</h2>
 
   <ul class="list-group">
-    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of quizList">
-      {{item.Quiz.Name}}
-      <span class="badge badge-primary badge-pill">{{item.ItemCount}}</span>
-    </li>
+    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let item of quizList">
+      <div class="d-flex w-100 justify-content-between">
+        {{item.Quiz.Name}}
+        <small class="badge badge-primary badge-pill" data-toggle="tooltip" data-placement="right" title="" data-original-title="Quiz items">{{item.ItemCount}}</small>
+      </div>
+    </a>
   </ul>
 </div>
 

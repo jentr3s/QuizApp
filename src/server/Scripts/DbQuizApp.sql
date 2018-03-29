@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `Quizzes` (
 	`IsActive`	INTEGER
 );
 INSERT INTO `Quizzes` VALUES (1,'Quiz1','Exercise 1','Jen Macaso',1);
-INSERT INTO `Quizzes` VALUES (2,'Quiz2','Exercise 1','Jen Macaso',1);
+INSERT INTO `Quizzes` VALUES (2,'Quiz2','Exercise 2','Jen Macaso',1);
 CREATE TABLE IF NOT EXISTS `QuizResult` (
 	`Id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`QuizId`	INTEGER NOT NULL,
