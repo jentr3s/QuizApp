@@ -22,10 +22,11 @@ export class SettingsComponent implements OnInit {
 
   quizList: any = [];
 
+  showMainPage: boolean = false;
+
   constructor(private sharedService: SharedService, private router: Router) { }
 
   ngOnInit() {
-    // this.sharedService.loginUser.subscribe(res => this.userInfo = res);
     this.sharedService.loggedIn.subscribe(res => this.isLoggedIn = res);
   }
 
@@ -39,12 +40,24 @@ export class SettingsComponent implements OnInit {
       this.isLoggedIn = true;
       this.sharedService.changeIsLoggedIn(true);
       this.sharedService.changeLoggedInUserDetail(this.userInfo);
-      
+
       this.loadQuizzes();
     }
     else {
       console.log("Failed to login!");
     }
+  }
+
+  logout() {
+    this.sharedService.changeMainPage(this.showMainPage = true);
+    this.sharedService.changeIsLoggedIn(false);
+    this.sharedService.changeLoggedInUserDetail(this.userInfo = null);
+    this.router.navigate(['']);
+  }
+
+  cancel(){
+    this.sharedService.changeMainPage(this.showMainPage = true);
+    this.router.navigate(['']);
   }
 
   loadQuizzes() {
@@ -62,12 +75,13 @@ export class SettingsComponent implements OnInit {
       let items = this.ipc.sendSync("loadItems", id)
       let result = JSON.parse(items);
 
+      console.log(result);
+
       if (items.length !== 0) {
         itemCount = items.length;
       }
 
       this.quizList.push({ Quiz: quizzes[i], ItemCount: itemCount });
-      console.log(this.quizList);
     }
   }
 }
