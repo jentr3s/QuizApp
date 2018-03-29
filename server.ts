@@ -37,10 +37,12 @@ function createWindow() {
     })
 
     // Load Quizzes
-    ipcMain.on("loadQuizzes", () => {
+    ipcMain.on("loadQuizzes", (event) => {
         let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
         result.then((quizzes) => {
-            win.webContents.send("quizzesList", quizzes);
+            // win.webContents.send("quizzesList", quizzes);
+            // result is always an array
+            event.returnValue = JSON.stringify(quizzes)
         })
     });
 
@@ -49,7 +51,10 @@ function createWindow() {
             QuizId: arg
         }).select('Id', 'Name', 'QuestionTypeId', 'Answer', 'QuizId')
         items.then((items) => {
-            win.webContents.send("itemList", items);
+            // win.webContents.send("itemList", items);
+            
+            // result is always an array
+            event.returnValue = JSON.stringify(items)
         })
     })
 
