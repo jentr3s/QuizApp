@@ -1,15 +1,18 @@
 <div *ngIf="!showMainPage">
   <!-- Place quiz title here -->
-  <h2 class="text-center">
-    Quiz title here
-  </h2>
+  <div>
+    <h2 class="text-center">
+      Please choose which quiz to take
+    </h2>
+  </div>
 
-  <div class="row">
-    <div class="form-group">
-      <label for="studentName">Please Enter Your Name</label>
-      <input type="name" class="form-control" id="inputName" aria-describedby="inputNameHelp" placeholder="Enter your name">
+
+  <div>
+    <div class="list-group" *ngFor="let item of quizzes">
+      <a href="#" class="list-group-item list-group-item-action" (click)="goToQuiz(item.Id)" >
+        {{item.Name}}
+      </a>
     </div>
-    <button class="btn btn-success pull-right" (click)="next()">Next</button>
 
   </div>
 
