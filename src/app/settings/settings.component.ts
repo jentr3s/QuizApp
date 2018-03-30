@@ -61,7 +61,7 @@ export class SettingsComponent implements OnInit {
   }
 
   loadQuizzes() {
-    let quizzes = this.ipc.sendSync("loadQuizzes")
+    let quizzes = this.ipc.sendSync("loadQuizzes");
     let result = JSON.parse(quizzes);
     if (result != null)
       this.loadItems(result);

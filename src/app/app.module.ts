@@ -10,7 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HomeComponent } from './home/home.component';
 import { SettingsComponent } from './settings/settings.component';
-import { LoginComponent } from './login/login.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 
 @NgModule({
@@ -18,7 +18,7 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     HomeComponent,
     SettingsComponent,
-    LoginComponent
+    QuizComponent,
   ],
   imports: [
     BrowserModule,

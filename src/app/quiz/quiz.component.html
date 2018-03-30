@@ -1,0 +1,20 @@
+<div>
+  <!-- Place quiz title here -->
+  <div>
+    <h2 class="text-center">
+      {{quiz.Name}}
+    </h2>
+  </div>
+
+
+  <div>
+    <div class="list-group" *ngFor="let item of quizzes">
+      <a href="#" class="list-group-item list-group-item-action" (click)="goToQuiz(item.Id)">
+        {{item.Name}}
+      </a>
+    </div>
+
+  </div>
+
+  <button class="btn btn-success pull-right" (click)="back()">Back</button>
+</div>

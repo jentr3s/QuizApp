@@ -37,22 +37,31 @@ function createWindow() {
     })
 
     // Load Quizzes
-    ipcMain.on("loadQuizzes", (event) => {
-        let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
-        result.then((quizzes) => {
-            // win.webContents.send("quizzesList", quizzes);
-            // result is always an array
-            event.returnValue = JSON.stringify(quizzes)
-        })
+    ipcMain.on("loadQuizzes", (event, arg) => {
+        if (arg === undefined) {
+            let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
+            result.then((quizzes) => {
+                event.returnValue = JSON.stringify(quizzes)
+            })
+        }
     });
 
+    ipcMain.on("loadQuiz", (event, arg) => {
+        let result = knex('Quizzes').where({
+            IsActive: 1,
+        }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive');
+
+        result.then((quiz) => {
+            event.returnValue = JSON.stringify(quiz[0]);
+        });
+    })
     ipcMain.on("loadItems", (event, arg) => {
         let items = knex('Items').where({
             QuizId: arg
         }).select('Id', 'Name', 'QuestionTypeId', 'Answer', 'QuizId')
         items.then((items) => {
             // win.webContents.send("itemList", items);
-            
+
             // result is always an array
             event.returnValue = JSON.stringify(items)
         })
