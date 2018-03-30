@@ -58,7 +58,7 @@ function createWindow() {
     ipcMain.on("loadItems", (event, arg) => {
         let items = knex('Items').where({
             QuizId: arg
-        }).select('Id', 'Name', 'QuestionTypeId', 'Answer', 'QuizId')
+        }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', "Options")
         items.then((items) => {
             // win.webContents.send("itemList", items);
 

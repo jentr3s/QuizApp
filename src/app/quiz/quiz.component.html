@@ -6,15 +6,37 @@
     </h2>
   </div>
 
-
   <div>
-    <div class="list-group" *ngFor="let item of quizzes">
+    <div class="list-group" *ngFor="let quiz of quizzes">
       <a href="#" class="list-group-item list-group-item-action" (click)="goToQuiz(item.Id)">
-        {{item.Name}}
+        {{quiz.Name}}
       </a>
     </div>
 
-  </div>
+    <div class="list-group" *ngFor="let item of items; let i = index">
+      <div *ngIf="i == questionindex">
+        <div>
+          <fieldset>
+            <legend>{{item.Question}}</legend>
+            <div class="form-group" *ngIf="item.QuestionTypeId == 1">
+              <div class="custom-control custom-radio" *ngFor="let option of item.Options; let idx = index">
+                <input type="radio" id="customRadio{{idx}}" name="customRadio" class="custom-control-input" (change)="onSelectionChange(option, item.Id)">
+                <label class="custom-control-label" for="customRadio{{idx}}">{{option}}</label>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="item.QuestionTypeId == 2">
+                <input type="text" class="form-control-plaintext" id="inputAnswer" value="email@example.com">
+            </div>
+          </fieldset>
+        </div>
 
-  <button class="btn btn-success pull-right" (click)="back()">Back</button>
-</div>
+      </div>
+
+    </div>
+
+    <div *ngIf="questionindex < items.length">
+      <button class="btn btn-success pull-right" (click)="next(answers)">Next</button>
+    </div>
+
+    <button class="btn btn-success pull-right" (click)="back()">Back</button>
+  </div>
