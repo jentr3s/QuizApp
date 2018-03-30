@@ -13,11 +13,19 @@ export class QuizComponent implements OnInit {
 
   // IPC Renderer
   ipc = electron.ipcRenderer;
+
   quiz: any;
   items: any;
+
   questionindex: number = 0;
+
   answers: any = [];
   answer: any;
+
+  // For fill in the blanks
+  answerInput: string;
+  quizIdInput: any;
+
   constructor(private router: Router, private sharedService: SharedService) { }
 
   ngOnInit() {
@@ -42,8 +50,16 @@ export class QuizComponent implements OnInit {
 
   next() {
     this.questionindex++;
-    this.answers.push(this.answer);
-    console.log(this.answers);
+    console.log("QuizId" + this.quizIdInput);
+
+    if (this.answerInput != null)
+      this.answers.push({ QuizId: this.quizIdInput, answer: this.answerInput });
+    else
+      this.answers.push(this.answer);
+
+    // For fill in the blanks
+    this.answerInput = null;
+    // this.quizIdInput = null;
   }
 
   onSelectionChange(data, quizId) {
