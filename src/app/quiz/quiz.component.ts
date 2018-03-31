@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
 
 declare let electron: any;
-
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
@@ -11,6 +10,7 @@ declare let electron: any;
 })
 export class QuizComponent implements OnInit {
 
+  @ViewChild('var') itemId: ElementRef;
   // IPC Renderer
   ipc = electron.ipcRenderer;
 
@@ -24,7 +24,6 @@ export class QuizComponent implements OnInit {
 
   // For fill in the blanks
   answerInput: string;
-  quizIdInput: any;
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
@@ -50,10 +49,12 @@ export class QuizComponent implements OnInit {
 
   next() {
     this.questionindex++;
-    console.log("QuizId" + this.quizIdInput);
 
-    if (this.answerInput != null)
-      this.answers.push({ QuizId: this.quizIdInput, answer: this.answerInput });
+    if (this.answerInput != null) {
+      this.answers.push({ QuizId: this.itemId, answer: this.answerInput });
+      console.log("ItemId " + this.itemId.nativeElement.value);
+
+    }
     else
       this.answers.push(this.answer);
 
@@ -62,8 +63,8 @@ export class QuizComponent implements OnInit {
     // this.quizIdInput = null;
   }
 
-  onSelectionChange(data, quizId) {
-    this.answer = { QuizId: quizId, answer: data };
+  onSelectionChange(data, itemId) {
+    this.answer = { ItemId: itemId, answer: data };
   }
   back() {
     this.router.navigate(['']);

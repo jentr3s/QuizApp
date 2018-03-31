@@ -27,8 +27,8 @@
               <div *ngIf="item.QuestionTypeId == 2">
                 <input type="text" [(ngModel)]="answerInput" name="txtAnswer" class="form-control" id="txtAnswer">
 
-                <input type="hidden" name="quizIdInput" value="{{item.Id}}" /> {{item.Id}}
-                
+                <input type="hidden" #var [value]="item.Id"/>
+
               </div>
             </fieldset>
           </div>
