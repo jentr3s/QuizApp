@@ -43,5 +43,8 @@
 
       <button class="btn btn-success pull-right" (click)="back()">Back</button>
     </div>
+
+    <span *ngIf="questionindex == items.length">Your Total score is {{score}} / {{items.length}}</span>
+
   </form>
 </div>

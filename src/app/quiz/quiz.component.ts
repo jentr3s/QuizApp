@@ -25,6 +25,8 @@ export class QuizComponent implements OnInit {
   // For fill in the blanks
   answerInput: string;
 
+  score: number = 0;
+
   constructor(private router: Router, private sharedService: SharedService) { }
 
   ngOnInit() {
@@ -44,30 +46,58 @@ export class QuizComponent implements OnInit {
 
       this.items[i].Options = JSON.parse(this.items[i].Options);
     }
+
     console.log(this.items);
   }
 
   next() {
     this.questionindex++;
 
+    // Checks if user has inputted an answer
     if (this.answerInput != null) {
-      this.answers.push({ QuizId: this.itemId, answer: this.answerInput });
-      console.log("ItemId " + this.itemId.nativeElement.value);
 
+      let exist = this.answers.filter(answer => answer.itemId == this.itemId.nativeElement.value);
+
+      console.log("exist " + exist);
+      this.answers.push({ itemId: this.itemId.nativeElement.value, answer: this.answerInput });
+
+      this.answerInput = null;
     }
-    else
+    // Else its multiple choice
+    else {
       this.answers.push(this.answer);
+    }
 
-    // For fill in the blanks
-    this.answerInput = null;
-    // this.quizIdInput = null;
+    if (this.questionindex == this.items.length)
+      this.compute();
   }
 
   onSelectionChange(data, itemId) {
-    this.answer = { ItemId: itemId, answer: data };
+    this.answer = { itemId: itemId, answer: data };
   }
+
+  compute() {
+    console.log("Compute!");
+    console.log(this.answers);
+    this.score = 0;
+
+    for (let i = 0; i < this.answers; i++) {
+      // if (this.answer[i] == this.items[i].Answer) {
+      //   this.score += 1;
+      // }
+
+      let item = this.items.filter(item => item.Id == this.answer[i].itemId);
+      if (item) {
+        console.log("this item" + item)
+      }
+    }
+    console.log("Score : " + this.score)
+    return this.score;
+  }
+
   back() {
     this.router.navigate(['']);
+    this.answers = null;
   }
 
 }
