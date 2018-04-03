@@ -80,7 +80,7 @@ export class QuizComponent implements OnInit {
 
     for (let i = 0; i < this.answers.length; i++) {
 
-      let item = this.items.filter(item => item.Id == this.answers[i].itemId && item.Answer == this.answers[i].answer)[0];
+      let item = this.items.filter(item => item.Id == this.answers[i].itemId && item.Answer.toLowerCase() == this.answers[i].answer.toLowerCase())[0];
 
       if (item) {
         this.score += 1;
