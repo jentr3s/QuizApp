@@ -55,11 +55,8 @@ export class QuizComponent implements OnInit {
 
     // Checks if user has inputted an answer
     if (this.answerInput != null) {
-
-      let exist = this.answers.filter(answer => answer.itemId == this.itemId.nativeElement.value);
-
-      console.log("exist " + exist);
-      this.answers.push({ itemId: this.itemId.nativeElement.value, answer: this.answerInput });
+      let id = parseInt(this.itemId.nativeElement.value);
+      this.answers.push({ itemId: id, answer: this.answerInput });
 
       this.answerInput = null;
     }
@@ -81,15 +78,14 @@ export class QuizComponent implements OnInit {
     console.log(this.answers);
     this.score = 0;
 
-    for (let i = 0; i < this.answers; i++) {
-      // if (this.answer[i] == this.items[i].Answer) {
-      //   this.score += 1;
-      // }
+    for (let i = 0; i < this.answers.length; i++) {
 
-      let item = this.items.filter(item => item.Id == this.answer[i].itemId);
+      let item = this.items.filter(item => item.Id == this.answers[i].itemId && item.Answer == this.answers[i].answer)[0];
+
       if (item) {
-        console.log("this item" + item)
+        this.score += 1;
       }
+
     }
     console.log("Score : " + this.score)
     return this.score;
