@@ -11,7 +11,7 @@ export class SharedService {
   mainPage = this.isMainPage.asObservable();
 
   // User who logged in value
-  private userLoggedIn = new BehaviorSubject<object>({ Id: 0, Name: "empty", Username: "empty", PermissionType: "empty" });
+  private userLoggedIn = new BehaviorSubject<object>({ Id: 0, Name: 'empty', Username: 'empty', PermissionType: 'empty' });
   loginUser = this.userLoggedIn.asObservable();
 
    // This is to show main page
@@ -29,6 +29,6 @@ export class SharedService {
   }
 
   changeIsLoggedIn(data) {
-    this.isLoggedIn.next(data)
+    this.isLoggedIn.next(data);
   }
 }

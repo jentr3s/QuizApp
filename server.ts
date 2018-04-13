@@ -8,7 +8,8 @@ let knex = require("knex")({
     client: "sqlite3",
     connection: {
         filename: './src/server/scripts/DbQuizApp'
-    }
+    },
+    useNullAsDefault: true
 });
 
 function createWindow() {

@@ -17,7 +17,7 @@ export class QuizComponent implements OnInit {
   quiz: any;
   items: any;
 
-  questionindex: number = 0;
+  questionIndex: number = 0;
 
   answers: any = [];
   answer: any;
@@ -36,13 +36,13 @@ export class QuizComponent implements OnInit {
   }
 
   loadQuiz() {
-    let result = this.ipc.sendSync("loadQuiz");
+    const result = this.ipc.sendSync('loadQuiz');
     this.quiz = JSON.parse(result);
     this.loadItems(this.quiz.Id);
   }
 
   loadItems(quizId: any) {
-    let result = this.ipc.sendSync("loadItems", quizId)
+    const result = this.ipc.sendSync('loadItems', quizId);
     this.items = JSON.parse(result);
     for (let i = 0; i < this.items.length; i++) {
 
@@ -53,27 +53,32 @@ export class QuizComponent implements OnInit {
   }
 
   next() {
-    this.questionindex++;
+    this.questionIndex++;
 
-    if (this.studentName != null)
+    if (this.studentName != null) {
       this.hasName = true;
-      
+    }
+
     // Checks if user has inputted an answer
     if (this.answerInput != null) {
-      let id = parseInt(this.itemId.nativeElement.value);
+      // For getting the hidden id value
+      const id = parseInt(this.itemId.nativeElement.value, 10);
       this.answers.push({ itemId: id, answer: this.answerInput });
 
       this.answerInput = null;
-    }
-    // Else its multiple choice
-    else {
+    } else {
+      // Else its multiple choice
       this.answers.push(this.answer);
     }
 
-    if (this.questionindex == this.items.length)
+    console.log(this.answers);
+
+    if (this.questionIndex === this.items.length) {
       this.compute();
+    }
   }
 
+  // This is for the radio button on click changes
   onSelectionChange(data, itemId) {
     this.answer = { itemId: itemId, answer: data };
   }
@@ -84,7 +89,8 @@ export class QuizComponent implements OnInit {
 
     for (let i = 0; i < this.answers.length; i++) {
 
-      let item = this.items.filter(item => item.Id == this.answers[i].itemId && item.Answer.toLowerCase() == this.answers[i].answer.toLowerCase())[0];
+      const item = this.items.filter(x => x.Id === this.answers[i].itemId
+        && x.Answer.toLowerCase() === this.answers[i].answer.toLowerCase())[0];
 
       if (item) {
         this.score += 1;

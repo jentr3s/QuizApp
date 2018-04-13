@@ -5,15 +5,16 @@
     </h2>
   </div>
   <form>
-
+     <!-- Student Name -->
     <div *ngIf="!hasName">
       Name:
       <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control" id="txtName">
     </div>
 
+    <!-- Questions -->
     <div>
       <div class="list-group" *ngFor="let item of items; let i = index">
-        <div *ngIf="i == questionindex">
+        <div *ngIf="i == questionIndex">
           <div class="form-group">
             <fieldset>
               <legend>{{item.Question}}</legend>
@@ -36,14 +37,16 @@
 
       </div>
 
-      <div *ngIf="questionindex < items.length">
+      <div *ngIf="questionIndex < items.length">
         <button class="btn btn-success pull-right" (click)="next()">Next</button>
       </div>
 
       <button class="btn btn-success pull-right" (click)="back()">Back</button>
     </div>
+    <!-- End Of Question -->
 
-    <div *ngIf="questionindex == items.length">
+    <!-- Result -->
+    <div *ngIf="questionIndex == items.length">
       <span>Student Name: {{studentName}}</span>
       <span>Your Total score is {{score}} / {{items.length}}</span>
     </div>

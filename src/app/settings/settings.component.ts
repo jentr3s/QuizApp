@@ -31,9 +31,9 @@ export class SettingsComponent implements OnInit {
   }
 
   login() {
-    let data = { username: this.username, password: this.password };
+    const data = { username: this.username, password: this.password };
 
-    let loggedInUser = this.ipc.sendSync("login", data)
+    const loggedInUser = this.ipc.sendSync('login', data);
     this.userInfo = JSON.parse(loggedInUser);
 
     if (this.userInfo != null) {
@@ -42,9 +42,8 @@ export class SettingsComponent implements OnInit {
       this.sharedService.changeLoggedInUserDetail(this.userInfo);
 
       this.loadQuizzes();
-    }
-    else {
-      console.log("Failed to login!");
+    } else {
+      console.log('Failed to login!');
     }
   }
 
@@ -55,25 +54,26 @@ export class SettingsComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  cancel(){
+  cancel() {
     this.sharedService.changeMainPage(this.showMainPage = true);
     this.router.navigate(['']);
   }
 
   loadQuizzes() {
-    let quizzes = this.ipc.sendSync("loadQuizzes");
-    let result = JSON.parse(quizzes);
-    if (result != null)
+    const quizzes = this.ipc.sendSync('loadQuizzes');
+    const result = JSON.parse(quizzes);
+    if (result != null) {
       this.loadItems(result);
+    }
   }
 
   loadItems(quizzes) {
-    for (var i = 0; i < quizzes.length; i++) {
-      var itemCount = 0;
-      var id = quizzes[i].Id;
+    for (let i = 0; i < quizzes.length; i++) {
+      let itemCount = 0;
+      const id = quizzes[i].Id;
 
-      let items = this.ipc.sendSync("loadItems", id)
-      let result = JSON.parse(items);
+      const items = this.ipc.sendSync('loadItems', id);
+      const result = JSON.parse(items);
 
       console.log(result);
 
