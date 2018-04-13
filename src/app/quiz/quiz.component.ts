@@ -26,6 +26,8 @@ export class QuizComponent implements OnInit {
   answerInput: string;
 
   score: number = 0;
+  studentName: string;
+  hasName: boolean = false;
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
@@ -53,6 +55,9 @@ export class QuizComponent implements OnInit {
   next() {
     this.questionindex++;
 
+    if (this.studentName != null)
+      this.hasName = true;
+      
     // Checks if user has inputted an answer
     if (this.answerInput != null) {
       let id = parseInt(this.itemId.nativeElement.value);
@@ -74,7 +79,6 @@ export class QuizComponent implements OnInit {
   }
 
   compute() {
-    console.log("Compute!");
     console.log(this.answers);
     this.score = 0;
 
@@ -87,7 +91,6 @@ export class QuizComponent implements OnInit {
       }
 
     }
-    console.log("Score : " + this.score)
     return this.score;
   }
 

@@ -1,18 +1,17 @@
 <div>
-  <!-- Place quiz title here -->
   <div>
     <h2 class="text-center">
       {{quiz.Name}}
     </h2>
   </div>
   <form>
-    <div>
-      <div class="list-group" *ngFor="let quiz of quizzes">
-        <a href="#" class="list-group-item list-group-item-action" (click)="goToQuiz(item.Id)">
-          {{quiz.Name}}
-        </a>
-      </div>
 
+    <div *ngIf="!hasName">
+      Name:
+      <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control" id="txtName">
+    </div>
+
+    <div>
       <div class="list-group" *ngFor="let item of items; let i = index">
         <div *ngIf="i == questionindex">
           <div class="form-group">
@@ -27,7 +26,7 @@
               <div *ngIf="item.QuestionTypeId == 2">
                 <input type="text" [(ngModel)]="answerInput" name="txtAnswer" class="form-control" id="txtAnswer">
 
-                <input type="hidden" #var [value]="item.Id"/>
+                <input type="hidden" #var [value]="item.Id" />
 
               </div>
             </fieldset>
@@ -44,7 +43,10 @@
       <button class="btn btn-success pull-right" (click)="back()">Back</button>
     </div>
 
-    <span *ngIf="questionindex == items.length">Your Total score is {{score}} / {{items.length}}</span>
+    <div *ngIf="questionindex == items.length">
+      <span>Student Name: {{studentName}}</span>
+      <span>Your Total score is {{score}} / {{items.length}}</span>
+    </div>
 
   </form>
 </div>
