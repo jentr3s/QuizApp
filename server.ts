@@ -13,7 +13,10 @@ let knex = require("knex")({
 });
 
 function createWindow() {
-    win = new BrowserWindow({ width: 800, height: 600 })
+    win = new BrowserWindow({ 
+        width: 800, 
+        height: 600
+    })
 
     // load the dist folder from Angular
     win.loadURL(url.format({

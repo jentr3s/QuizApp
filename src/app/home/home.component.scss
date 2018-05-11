@@ -1,11 +1,15 @@
-.bgimg {
-  // background-image: url("assets/icons/quizImage.jpg");
+.bg {
+  // background: url('assets/icons/quizImage.jpg') no-repeat center center;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index: -1;
+}
 
-  /* Full height */
-  height: 100%; 
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.jumbotron {
+  padding: 10rem 2rem;
+  // background-color: #2b2e3b !important;
+  // color: #9feaf9;
+  border-radius: unset;
+  background:transparent;
 }
