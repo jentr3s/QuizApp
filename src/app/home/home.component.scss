@@ -1,3 +1,11 @@
-.footer {position: absolute;
-    bottom: 0;
-  }
+.bgimg {
+  // background-image: url("assets/icons/quizImage.jpg");
+
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
