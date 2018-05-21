@@ -18,6 +18,8 @@
         <div *ngIf="i == questionIndex">
           <div class="form-group">
             <fieldset>
+              <div style="width: 100%;margin-top: 0.25rem;font-size: 80%;color: #E74C3C;" *ngIf="noAnswer != null">{{errorMsgNoAnswer}}</div>
+
               <legend>{{item.Question}}</legend>
               <div *ngIf="item.QuestionTypeId == 1">
                 <div class="custom-control custom-radio" *ngFor="let option of item.Options; let idx = index">
@@ -26,7 +28,7 @@
                 </div>
               </div>
               <div *ngIf="item.QuestionTypeId == 2">
-                <input type="text" [(ngModel)]="answerInput" name="txtAnswer" class="form-control" id="txtAnswer">
+                <input type="text" [(ngModel)]="answerInput" name="txtAnswer" class="form-control {{noAnswer}}" id="txtAnswer">
 
                 <input type="hidden" #var [value]="item.Id" />
 

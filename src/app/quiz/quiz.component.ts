@@ -30,6 +30,8 @@ export class QuizComponent implements OnInit {
   hasName: boolean = false;
   errorMsg: string = null;
   isValid: string = null;
+  noAnswer: string = null;
+  errorMsgNoAnswer: string = null;
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
@@ -55,34 +57,51 @@ export class QuizComponent implements OnInit {
   }
 
   next() {
+    if (this.validate()) {
+      this.questionIndex++;
+      this.hasName = true;
+
+      // Reset error message
+      this.noAnswer = null;
+      this.errorMsgNoAnswer = null;
+
+      // Checks if user has inputted an answer
+      if (this.answerInput != null) {
+        // For getting the hidden id value
+        const id = parseInt(this.itemId.nativeElement.value, 10);
+        this.answers.push({ itemId: id, answer: this.answerInput });
+
+        this.answerInput = null;
+      } else {
+        // Else its multiple choice
+        this.answers.push(this.answer);
+      }
+
+      console.log(this.answers);
+
+      if (this.questionIndex === this.items.length) {
+        this.compute();
+      }
+    }
+  }
+
+  validate() {
 
     if (this.studentName == null) {
       this.hasName = false;
       this.isValid = "is-invalid";
       this.errorMsg = "Please enter your name.";
-      return;
+      return false;
     }
 
-    this.questionIndex++;
-    this.hasName = true;
-
-    // Checks if user has inputted an answer
-    if (this.answerInput != null) {
-      // For getting the hidden id value
-      const id = parseInt(this.itemId.nativeElement.value, 10);
-      this.answers.push({ itemId: id, answer: this.answerInput });
-
-      this.answerInput = null;
-    } else {
-      // Else its multiple choice
-      this.answers.push(this.answer);
+    if ((this.answerInput == null || this.answerInput == undefined) &&
+      (this.answer == null || this.answer == undefined)) {
+      this.noAnswer = "is-invalid";
+      this.errorMsgNoAnswer = "Please select you answer";
+      return false;
     }
 
-    console.log(this.answers);
-
-    if (this.questionIndex === this.items.length) {
-      this.compute();
-    }
+    return true;
   }
 
   // This is for the radio button on click changes
