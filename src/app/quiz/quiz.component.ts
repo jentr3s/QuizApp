@@ -28,6 +28,8 @@ export class QuizComponent implements OnInit {
   score: number = 0;
   studentName: string;
   hasName: boolean = false;
+  errorMsg: string = null;
+  isValid: string = null;
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
@@ -53,11 +55,16 @@ export class QuizComponent implements OnInit {
   }
 
   next() {
-    this.questionIndex++;
 
-    if (this.studentName != null) {
-      this.hasName = true;
+    if (this.studentName == null) {
+      this.hasName = false;
+      this.isValid = "is-invalid";
+      this.errorMsg = "Please enter your name.";
+      return;
     }
+
+    this.questionIndex++;
+    this.hasName = true;
 
     // Checks if user has inputted an answer
     if (this.answerInput != null) {

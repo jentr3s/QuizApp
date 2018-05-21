@@ -8,7 +8,8 @@
     <!-- Student Name -->
     <div *ngIf="!hasName" style="padding-bottom: 15px">
       Name:
-      <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control" id="txtName" placeholder="Please enter your name">
+      <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control {{isValid}}" id="txtName" placeholder="Please enter your name">
+      <div class="invalid-feedback" *ngIf="isValid != null">{{errorMsg}}</div>
     </div>
 
     <!-- Questions -->
@@ -45,7 +46,7 @@
       </div>
 
       <button class="btn btn-success pull-right" (click)="back()">Cancel</button>
-      
+
     </div>
     <!-- End Of Question -->
 
