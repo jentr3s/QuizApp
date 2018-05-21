@@ -1,14 +1,14 @@
-<div>
+<div class="jumbotron" style="height: 100vh; margin-bottom: unset">
   <div>
     <h2 class="text-center">
       {{quiz.Name}}
     </h2>
   </div>
   <form>
-     <!-- Student Name -->
-    <div *ngIf="!hasName">
+    <!-- Student Name -->
+    <div *ngIf="!hasName" style="padding-bottom: 15px">
       Name:
-      <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control" id="txtName">
+      <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control" id="txtName" placeholder="Please enter your name">
     </div>
 
     <!-- Questions -->
@@ -40,15 +40,19 @@
       <div *ngIf="questionIndex < items.length">
         <button class="btn btn-success pull-right" (click)="next()">Next</button>
       </div>
+      <div *ngIf="questionIndex === items.length">
+        <button class="btn btn-success pull-right" (click)="back()">Finish</button>
+      </div>
 
-      <button class="btn btn-success pull-right" (click)="back()">Back</button>
+      <button class="btn btn-success pull-right" (click)="back()">Cancel</button>
+      
     </div>
     <!-- End Of Question -->
 
     <!-- Result -->
     <div *ngIf="questionIndex == items.length">
-      <span>Student Name: {{studentName}}</span>
-      <span>Your Total score is {{score}} / {{items.length}}</span>
+      <span>Hi {{studentName}}!, </span>
+      <span>Your Total Score is {{score}} / {{items.length}}</span>
     </div>
 
   </form>
