@@ -18,7 +18,7 @@
         <div *ngIf="i == questionIndex">
           <div class="form-group">
             <fieldset>
-              <div style="width: 100%;margin-top: 0.25rem;font-size: 80%;color: #E74C3C;" *ngIf="noAnswer != null">{{errorMsgNoAnswer}}</div>
+              <div class="errMsg" *ngIf="noAnswer != null">{{errorMsgNoAnswer}}</div>
 
               <legend>{{item.Question}}</legend>
               <div *ngIf="item.QuestionTypeId == 1">
@@ -54,7 +54,7 @@
 
     <!-- Result -->
     <div *ngIf="questionIndex == items.length">
-      <span>Hi {{studentName}}!, </span>
+      <span>Hi {{studentName}}! </span>
       <span>Your Total Score is {{score}} / {{items.length}}</span>
     </div>
 

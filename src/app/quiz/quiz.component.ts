@@ -77,12 +77,14 @@ export class QuizComponent implements OnInit {
         this.answers.push(this.answer);
       }
 
-      console.log(this.answers);
-
       if (this.questionIndex === this.items.length) {
         this.compute();
       }
     }
+
+    // reset answer
+    this.answer = null;
+    this.answerInput = null;
   }
 
   validate() {
@@ -94,7 +96,7 @@ export class QuizComponent implements OnInit {
       return false;
     }
 
-    if ((this.answerInput == null || this.answerInput == undefined) &&
+    if ((this.answerInput == null || this.answerInput == undefined || this.answerInput == "") &&
       (this.answer == null || this.answer == undefined)) {
       this.noAnswer = "is-invalid";
       this.errorMsgNoAnswer = "Please select you answer";
