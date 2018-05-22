@@ -32,6 +32,8 @@ export class QuizComponent implements OnInit {
   isValid: string = null;
   noAnswer: string = null;
   errorMsgNoAnswer: string = null;
+  passed: boolean = false;
+  failed: boolean = false;
 
   constructor(private router: Router, private sharedService: SharedService) { }
 
@@ -91,18 +93,17 @@ export class QuizComponent implements OnInit {
 
     if (this.studentName == null) {
       this.hasName = false;
-      this.isValid = "is-invalid";
-      this.errorMsg = "Please enter your name.";
+      this.isValid = 'is-invalid';
+      this.errorMsg = 'Please enter your name.';
       return false;
     }
 
-    if ((this.answerInput == null || this.answerInput == undefined || this.answerInput == "") &&
-      (this.answer == null || this.answer == undefined)) {
-      this.noAnswer = "is-invalid";
-      this.errorMsgNoAnswer = "Please select you answer";
+    if ((this.answerInput === null || this.answerInput === undefined || this.answerInput === '') &&
+      (this.answer === null || this.answer === undefined)) {
+      this.noAnswer = 'is-invalid';
+      this.errorMsgNoAnswer = 'Please select you answer';
       return false;
     }
-
     return true;
   }
 
@@ -112,7 +113,6 @@ export class QuizComponent implements OnInit {
   }
 
   compute() {
-    console.log(this.answers);
     this.score = 0;
 
     for (let i = 0; i < this.answers.length; i++) {
@@ -125,6 +125,14 @@ export class QuizComponent implements OnInit {
       }
 
     }
+
+    const result = this.items.length / 2;
+    if (this.score >= result) {
+      this.passed = true;
+    } else {
+      this.failed = true;
+    }
+
     return this.score;
   }
 

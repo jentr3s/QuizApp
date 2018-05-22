@@ -1,4 +1,4 @@
-<div class="jumbotron" style="height: 100vh; margin-bottom: unset">
+<div class="jumbotron">
   <div>
     <h2 class="text-center">
       {{quiz.Name}}
@@ -6,8 +6,8 @@
   </div>
   <form>
     <!-- Student Name -->
-    <div *ngIf="!hasName" style="padding-bottom: 15px">
-      Name:
+    <div *ngIf="!hasName" class="studNameDiv">
+      <label for="staticName" class="col-sm-2 col-form-label studNameLabel">Name</label>
       <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control {{isValid}}" id="txtName" placeholder="Please enter your name">
       <div class="invalid-feedback" *ngIf="isValid != null">{{errorMsg}}</div>
     </div>
@@ -47,7 +47,6 @@
         <button class="btn btn-success pull-right" (click)="back()">Finish</button>
       </div>
 
-      <button class="btn btn-success pull-right" (click)="back()">Cancel</button>
 
     </div>
     <!-- End Of Question -->
@@ -56,6 +55,9 @@
     <div *ngIf="questionIndex == items.length">
       <span>Hi {{studentName}}! </span>
       <span>Your Total Score is {{score}} / {{items.length}}</span>
+      <span class="text-success" *ngIf="passed">YOU PASSED </span>
+      <span class="text-danger" *ngIf="failed">YOU FAILED </span>
+      
     </div>
 
   </form>
