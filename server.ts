@@ -58,7 +58,8 @@ function createWindow() {
         result.then((quiz) => {
             event.returnValue = JSON.stringify(quiz[0]);
         });
-    })
+    });
+
     ipcMain.on("loadItems", (event, arg) => {
         let items = knex('Items').where({
             QuizId: arg
@@ -69,10 +70,15 @@ function createWindow() {
             // result is always an array
             event.returnValue = JSON.stringify(items)
         })
-    })
+    });
 
-
-
+    // insert quiz result
+    ipcMain.on("insertQuizResult", (event, arg) => {
+        let result = knex.insert(arg).into("QuizResults")
+        result.then((id) => {
+            event.returnValue = JSON.stringify(id)
+        })
+    });
 
     // Load users
     ipcMain.on("loadUsers", () => {

@@ -54,8 +54,6 @@ export class QuizComponent implements OnInit {
 
       this.items[i].Options = JSON.parse(this.items[i].Options);
     }
-
-    console.log(this.items);
   }
 
   next() {
@@ -123,7 +121,6 @@ export class QuizComponent implements OnInit {
       if (item) {
         this.score += 1;
       }
-
     }
 
     const result = this.items.length / 2;
@@ -133,7 +130,20 @@ export class QuizComponent implements OnInit {
       this.failed = true;
     }
 
+    this.saveResult();
     return this.score;
+  }
+
+  saveResult() {
+    let res: string = null;
+    let id: string = null;
+    if (this.passed) {
+      res = 'Passed';
+    } else { res = 'Failed' }
+
+    const result = { QuizId: this.quiz.id, StudentName: this.studentName, Result: res, Answer: this.answers };
+    const insert = this.ipc.sendSync('insertQuizResult', result);
+    id = JSON.parse(insert);
   }
 
   back() {

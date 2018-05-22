@@ -75,8 +75,6 @@ export class SettingsComponent implements OnInit {
       const items = this.ipc.sendSync('loadItems', id);
       const result = JSON.parse(items);
 
-      console.log(result);
-
       if (items.length !== 0) {
         itemCount = items.length;
       }

@@ -1,6 +1,8 @@
-<div *ngIf="!isLoggedIn">
+<div *ngIf="!isLoggedIn" class="centerLogin">
   <div class="card bg-light mb-6" style="max-width: 20rem;">
-    <div class="card-header">Please login</div>
+    <div class="card-header">
+      <legend>Please Login</legend>
+    </div>
     <div class="card-body">
 
       <form (ngSubmit)="login()">
@@ -13,9 +15,11 @@
             <label for="txtPassword">Password</label>
             <input type="password" [(ngModel)]="password" name="password" class="form-control" id="txtPassword">
           </div>
-          <button type="submit" class="btn btn-primary" (click)="login()">Login</button>
-          <button type="button" class="btn btn-primary" (click)="cancel()">Cancel</button>
-          
+
+          <div class="buttons">
+            <button type="submit" class="btn btn-primary" (click)="login()">Login</button>
+            <button type="button" class="btn btn-primary" (click)="cancel()">Cancel</button>
+          </div>
         </fieldset>
       </form>
 
