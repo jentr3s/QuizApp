@@ -36,7 +36,7 @@ export class SettingsComponent implements OnInit {
     const loggedInUser = this.ipc.sendSync('login', data);
     this.userInfo = JSON.parse(loggedInUser);
 
-    if (this.userInfo != null) {
+    if (this.userInfo != null && this.userInfo !== 'error') {
       this.isLoggedIn = true;
       this.sharedService.changeIsLoggedIn(true);
       this.sharedService.changeLoggedInUserDetail(this.userInfo);

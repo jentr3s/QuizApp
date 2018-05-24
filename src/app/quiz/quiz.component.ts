@@ -139,9 +139,16 @@ export class QuizComponent implements OnInit {
     let id: string = null;
     if (this.passed) {
       res = 'Passed';
-    } else { res = 'Failed' }
+    } else { res = 'Failed'; }
 
-    const insertQuizResult = { QuizId: this.quiz.Id, StudentName: this.studentName, Result: res, Answers: JSON.stringify(this.answers), Score: this.score, Items: this.items.length };
+    const insertQuizResult = {
+      QuizId: this.quiz.Id,
+      StudentName: this.studentName,
+      Result: res, Answers: JSON.stringify(this.answers),
+      Score: this.score,
+      Items: this.items.length
+    };
+
     const result = this.ipc.sendSync('insertQuizResult', insertQuizResult);
     id = JSON.parse(result);
   }

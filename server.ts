@@ -4,17 +4,20 @@ const url = require('url')
 
 let win
 
+const docPath = app.getPath('documents');
+
+//Local connection only
 let knex = require("knex")({
     client: "sqlite3",
     connection: {
-        filename: './src/server/scripts/DbQuizApp'
+        filename: docPath + '/QuizAppDb/DbQuizApp'
     },
     useNullAsDefault: true
 });
 
 function createWindow() {
-    win = new BrowserWindow({ 
-        width: 800, 
+    win = new BrowserWindow({
+        width: 800,
         height: 600
     })
 
@@ -34,19 +37,25 @@ function createWindow() {
             Username: arg.username,
             Password: arg.password
         }).select('Id', 'Name', 'Username', 'PermissionType')
-        result.then((res) => {
-            // result is always an array
-            event.returnValue = JSON.stringify(res[0])
-        })
+            .then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res[0])
+            })
+            .catch((err) => {
+                event.returnValue = JSON.stringify('error')
+            });
     })
 
     // Load Quizzes
     ipcMain.on("loadQuizzes", (event, arg) => {
         if (arg === undefined) {
-            let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
+            let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes');
             result.then((quizzes) => {
                 event.returnValue = JSON.stringify(quizzes)
-            })
+            });
+            result.catch((err) => {
+                event.returnValue = JSON.stringify('error')
+            });
         }
     });
 
@@ -58,6 +67,11 @@ function createWindow() {
         result.then((quiz) => {
             event.returnValue = JSON.stringify(quiz[0]);
         });
+        
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        });
+
     });
 
     ipcMain.on("loadItems", (event, arg) => {
@@ -69,7 +83,10 @@ function createWindow() {
 
             // result is always an array
             event.returnValue = JSON.stringify(items)
-        })
+        });
+        items.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        });
     });
 
     // insert quiz result
@@ -77,22 +94,31 @@ function createWindow() {
         let result = knex.insert(arg).into("QuizResults")
         result.then((id) => {
             event.returnValue = JSON.stringify(id)
-        })
+        });
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        });
     });
 
     // Load users
-    ipcMain.on("loadUsers", () => {
+    ipcMain.on("loadUsers", (event, arg) => {
         let result = knex.select("Name").from("Users")
         result.then((rows) => {
             win.webContents.send("userList", rows);
-        })
+        });
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        });
     });
 
     ipcMain.on("insertInOptions", (event, arg) => {
         let result = knex.insert(arg).into("Options")
         result.then(function (id) {
             win.webContents.send("insertedId", id);
-        })
+        });
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        });
     });
 
     win.on('closed', () => {

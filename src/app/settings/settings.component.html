@@ -4,7 +4,7 @@
       <legend>Please Login</legend>
     </div>
     <div class="card-body">
-
+      <div class="errMsg" *ngIf="noAnswer != null">{{errorMsgNoAnswer}}</div>
       <form (ngSubmit)="login()">
         <fieldset>
           <div class="form-group">
