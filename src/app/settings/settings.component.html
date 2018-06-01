@@ -1,10 +1,10 @@
 <div *ngIf="!isLoggedIn" class="centerLogin">
-  <div class="card bg-light mb-6" style="max-width: 20rem;">
+  <div class="card bg-light mb-6 loginCard">
     <div class="card-header">
       <legend>Please Login</legend>
     </div>
+    <div class="errMsg" *ngIf="userInfo != error">Username or Password is invalid!</div>
     <div class="card-body">
-      <div class="errMsg" *ngIf="noAnswer != null">{{errorMsgNoAnswer}}</div>
       <form (ngSubmit)="login()">
         <fieldset>
           <div class="form-group">
@@ -71,7 +71,5 @@
       </div>
     </div>
   </div>
-
-
 
 </div>

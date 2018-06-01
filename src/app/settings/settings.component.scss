@@ -11,3 +11,15 @@
 .buttons {
     float: right;
 }
+
+.loginCard {
+    max-width: 20rem;
+}
+
+.errMsg {
+    width: 100%;
+    margin-top: .5rem;
+    font-size: 80%;
+    color: #E74C3C;
+    padding-left: 1.2rem;
+}
