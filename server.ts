@@ -4,7 +4,7 @@ const url = require('url')
 
 let win
 
-const docPath = app.getPath('documents');
+const docPath = app.getPath('documents')
 
 //Local connection only
 let knex = require("knex")({
@@ -13,7 +13,7 @@ let knex = require("knex")({
         filename: docPath + '/QuizAppDb/DbQuizApp'
     },
     useNullAsDefault: true
-});
+})
 
 function createWindow() {
     win = new BrowserWindow({
@@ -43,83 +43,96 @@ function createWindow() {
             })
             .catch((err) => {
                 event.returnValue = JSON.stringify('error')
-            });
+            })
     })
 
     // Load Quizzes
-    ipcMain.on("loadQuizzes", (event, arg) => {
+    ipcMain.on("getQuizzes", (event, arg) => {
         if (arg === undefined) {
-            let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes');
+            let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
             result.then((quizzes) => {
                 event.returnValue = JSON.stringify(quizzes)
-            });
+            })
             result.catch((err) => {
                 event.returnValue = JSON.stringify('error')
-            });
+            })
         }
-    });
+    })
 
-    ipcMain.on("loadQuiz", (event, arg) => {
+    // Load Quiz
+    ipcMain.on("getQuiz", (event, arg) => {
         let result = knex('Quizzes').where({
             IsActive: 1,
-        }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive');
-
+        }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
         result.then((quiz) => {
-            event.returnValue = JSON.stringify(quiz[0]);
-        });
-        
+            event.returnValue = JSON.stringify(quiz[0])
+        })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')
-        });
+        })
 
-    });
+    })
 
-    ipcMain.on("loadItems", (event, arg) => {
+    // Load Items
+    ipcMain.on("getItems", (event, arg) => {
         let items = knex('Items').where({
             QuizId: arg
-        }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', "Options")
-        items.then((items) => {
-            // win.webContents.send("itemList", items);
-
+        }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', 'Options')
+        items.then((data) => {
             // result is always an array
-            event.returnValue = JSON.stringify(items)
-        });
+            event.returnValue = JSON.stringify(data)
+        })
         items.catch((err) => {
             event.returnValue = JSON.stringify('error')
-        });
-    });
+        })
+    })
 
-    // insert quiz result
-    ipcMain.on("insertQuizResult", (event, arg) => {
-        let result = knex.insert(arg).into("QuizResults")
+     // Load Quiz Result
+     ipcMain.on("getQuizResult", (event, arg) => {
+        let results = knex('QuizResults').where({
+            QuizId: arg
+        }).select('Id', 'QuizId', 'StudentName', 'Result', 'Answers', 'Score', 'Items')
+        results.then((data) => {
+            // result is always an array
+            event.returnValue = JSON.stringify(data)
+        })
+        results.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        })
+    })
+
+    // Insert Quiz Result
+    ipcMain.on("putQuizResult", (event, arg) => {
+        let result = knex.insert(arg).into('QuizResults')
         result.then((id) => {
             event.returnValue = JSON.stringify(id)
-        });
+        })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')
-        });
-    });
+        })
+    })
 
     // Load users
-    ipcMain.on("loadUsers", (event, arg) => {
-        let result = knex.select("Name").from("Users")
+    ipcMain.on("getUsers", (event, arg) => {
+        let result = knex.select('Name').from('Users')
         result.then((rows) => {
-            win.webContents.send("userList", rows);
-        });
+            win.webContents.send('users', rows)
+        })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')
-        });
-    });
+        })
+    })
 
-    ipcMain.on("insertInOptions", (event, arg) => {
+    // Insert Options
+    ipcMain.on("putOptions", (event, arg) => {
         let result = knex.insert(arg).into("Options")
         result.then(function (id) {
-            win.webContents.send("insertedId", id);
-        });
+            win.webContents.send('insertedId', id)
+        })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')
-        });
-    });
+        })
+    })
 
     win.on('closed', () => {
         win = null

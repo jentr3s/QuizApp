@@ -21,6 +21,7 @@ export class SettingsComponent implements OnInit {
   password: string;
 
   quizList: any = [];
+  quizResult: any = [];
 
   showMainPage: boolean = false;
 
@@ -60,10 +61,11 @@ export class SettingsComponent implements OnInit {
   }
 
   loadQuizzes() {
-    const quizzes = this.ipc.sendSync('loadQuizzes');
+    const quizzes = this.ipc.sendSync('getQuizzes');
     const result = JSON.parse(quizzes);
     if (result != null) {
       this.loadItems(result);
+      this.loadQuizResult(result);
     }
   }
 
@@ -72,14 +74,33 @@ export class SettingsComponent implements OnInit {
       let itemCount = 0;
       const id = quizzes[i].Id;
 
-      const items = this.ipc.sendSync('loadItems', id);
+      const items = this.ipc.sendSync('getItems', id);
       const result = JSON.parse(items);
 
-      if (items.length !== 0) {
-        itemCount = items.length;
+      if (result.length !== 0) {
+        itemCount = result.length;
       }
 
       this.quizList.push({ Quiz: quizzes[i], ItemCount: itemCount });
+    }
+  }
+
+  loadQuizResult(quizzes) {
+    for (let i = 0; i < quizzes.length; i++) {
+      let studCount = 0;
+      const id = quizzes[i].Id;
+
+      const items = this.ipc.sendSync('getQuizResult', id);
+      const result = JSON.parse(items);
+
+      if (result !== null)
+        for (let j = 0; j < result.length; j++) {
+          if (result[j].QuizId === quizzes[i].Id) {
+            studCount++;
+          }
+        }
+
+      this.quizResult.push({ Quiz: quizzes[i], StudentCount: studCount });
     }
   }
 }

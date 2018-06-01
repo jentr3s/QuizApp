@@ -42,13 +42,13 @@ export class QuizComponent implements OnInit {
   }
 
   loadQuiz() {
-    const result = this.ipc.sendSync('loadQuiz');
+    const result = this.ipc.sendSync('getQuiz');
     this.quiz = JSON.parse(result);
     this.loadItems(this.quiz.Id);
   }
 
   loadItems(quizId: any) {
-    const result = this.ipc.sendSync('loadItems', quizId);
+    const result = this.ipc.sendSync('getItems', quizId);
     this.items = JSON.parse(result);
     for (let i = 0; i < this.items.length; i++) {
 
@@ -149,7 +149,7 @@ export class QuizComponent implements OnInit {
       Items: this.items.length
     };
 
-    const result = this.ipc.sendSync('insertQuizResult', insertQuizResult);
+    const result = this.ipc.sendSync('putQuizResult', insertQuizResult);
     id = JSON.parse(result);
   }
 

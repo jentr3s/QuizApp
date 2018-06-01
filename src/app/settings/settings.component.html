@@ -37,7 +37,7 @@
   </form>
   <div class="row">
     <div class="col">
-      <div class="card border-secondary mb-3" style="max-width: 20rem;">
+      <div class="card border-secondary mb-3 cardWidth">
         <div class="card-body">
           <h3 class="card-title">Quizzes</h3>
 
@@ -45,7 +45,8 @@
             <a href="#" class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizList">
               <div class="d-flex w-100 justify-content-between">
                 {{item.Quiz.Name}}
-                <small class="badge badge-primary badge-pill" data-toggle="tooltip" data-placement="right" title="" data-original-title="Quiz items">{{item.ItemCount}}</small>
+                <small class="badge badge-primary badge-pill" title="no. of items">{{item.ItemCount}}</small>
+              
               </div>
             </a>
           </ul>
@@ -59,10 +60,10 @@
           <h3 class="card-title">Quiz Results</h3>
 
           <ul class="list-group">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizList">
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizResult">
               <div class="d-flex justify-content-between">
                 {{item.Quiz.Name}}
-                <small class="badge badge-primary badge-pill" data-toggle="tooltip" data-placement="right" title="" data-original-title="Quiz items">{{item.ItemCount}}</small>
+                <small class="badge badge-primary badge-pill" data-toggle="tooltip" data-placement="right" title="" data-original-title="Quiz items">{{item.StudentCount}}</small>
               </div>
             </a>
           </ul>
