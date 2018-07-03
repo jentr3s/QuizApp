@@ -17,8 +17,9 @@ let knex = require("knex")({
 
 function createWindow() {
     win = new BrowserWindow({
-        width: 800,
-        height: 600
+        width: 850,
+        height: 600,
+        icon: path.join(__dirname, 'assets/icons/png/quiz-app.png')
     })
 
     // load the dist folder from Angular

@@ -1,5 +1,6 @@
 {
   "name": "quiz-app",
+  "productName": "quiz-app",
   "version": "0.0.0",
   "license": "MIT",
   "main": "server.ts",
@@ -12,7 +13,10 @@
     "e2e": "ng e2e",
     "electron": "ng build && electron .",
     "electron-aot": "ng build --prod && electron .",
-    "electron-rebuild": "electron-rebuild -f -w sqlite3"
+    "electron-rebuild": "electron-rebuild -f -w sqlite3",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . quiz-app --overwrite --asar=true --platform=win32 --arch=all --icon=src/assets/icons/win/quiz-app.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"QuizApp\"",
+    "package-linux": "electron-packager . quiz-app --overwrite --asar=true --platform=linux --arch=x64 --icon=src/assets/icons/png/1024x1024.png --prune=true --out=release-builds"
   },
   "private": true,
   "dependencies": {
@@ -44,7 +48,8 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
-    "electron": "^2.0.0",
+    "electron": "^2.0.3",
+    "electron-packager": "^12.1.0",
     "electron-rebuild": "^1.7.3",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",

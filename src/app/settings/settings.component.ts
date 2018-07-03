@@ -93,12 +93,13 @@ export class SettingsComponent implements OnInit {
       const items = this.ipc.sendSync('getQuizResult', id);
       const result = JSON.parse(items);
 
-      if (result !== null)
+      if (result !== null) {
         for (let j = 0; j < result.length; j++) {
           if (result[j].QuizId === quizzes[i].Id) {
             studCount++;
           }
         }
+      }
 
       this.quizResult.push({ Quiz: quizzes[i], StudentCount: studCount });
     }
