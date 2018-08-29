@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { SettingsComponent } from './settings/settings.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { ManageQuizComponent } from './settings/manage.quiz/manage.quiz.component';
+import { ManageResultComponent } from './settings/manage.result/manage.result.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'manageQuiz',
     component: ManageQuizComponent
+  },
+  {
+    path: 'manageResult',
+    component: ManageResultComponent
   }
 ];
 

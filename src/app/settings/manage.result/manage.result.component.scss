@@ -1,0 +1,14 @@
+.bd-example {
+    padding: 1.5rem;
+    margin-right: 0;
+    margin-left: 0;
+    border-width: .2rem;
+}
+.trim-info {
+      max-width: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;  
+      line-height: 15px;
+      position: relative;
+   }

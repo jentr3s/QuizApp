@@ -1,0 +1,33 @@
+<div>
+  <button type="button" class="btn btn-light float-right" (click)="print()"><i class="fas fa-print"></i></button>
+  <button type="button" class="btn btn-secondary float-right" (click)="back()">Back</button>
+</div> <br />
+
+<div class="bd-example">
+  <table class="table table-striped table-bordered table-sm" data-pagination="true" data-id-field="name" data-page-list="[5, 10, 25, 50, 100, ALL]"
+    data-page-size="5">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Student Name</th>
+        <th scope="col" style="text-align: center;">Result</th>
+        <th scope="col">Answers</th>
+        <th scope="col">Score</th>
+        <th scope="col">Items</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of results; let i = index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{item.StudentName}}</td>
+        <td style="text-align: center;">
+          <i *ngIf="item.Result === 'Passed'" class="fas fa-check-circle" style="color: #339af0;"></i>
+          <i *ngIf="item.Result !== 'Passed'" class="fas fa-times-circle" style="color: #ff6b6b;"></i>
+        </td>
+        <td class="trim-info" data-toggle="tooltip" data-placement="top" title="{{item.Answers}}">{{item.Answers}}</td>
+        <td>{{item.Score}}</td>
+        <td>{{item.Items}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

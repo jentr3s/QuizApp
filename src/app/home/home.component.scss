@@ -13,3 +13,13 @@
   border-radius: unset;
   background:transparent;
 }
+
+.keepcentered {
+  position:    absolute;
+  left:        50%;        /* Start with top left in the center */
+  top:         70%;
+  width:       190px;      /* The fixed width... */
+  height:      100px;      /* ...and height */
+  margin-left: -80px;     /* Shift over half the width */
+  margin-top:  -50px;      /* Shift up half the height */
+}

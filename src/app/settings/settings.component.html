@@ -33,7 +33,7 @@
   <hr class="my-4">
 
   <form>
-    <button type="button" class="btn btn-warning pull-right" (click)="logout()">Logout</button>
+    <button type="button" class="btn btn-warning float-right" (click)="logout()">Logout</button>
   </form>
   <div class="row">
     <div class="col">
@@ -51,7 +51,7 @@
             </a>
           </ul>
 
-          <button type="button" class="btn btn-warning pull-right" (click)="addQuiz()">AddQuiz</button>
+          <button type="button" class="btn btn-warning float-right" (click)="addQuiz()">AddQuiz</button>
 
         </div>
       </div>
@@ -62,8 +62,8 @@
           <h3 class="card-title">Quiz Results</h3>
 
           <ul class="list-group">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizResult">
-              <div class="d-flex justify-content-between">
+            <a class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizResult">
+              <div class="d-flex justify-content-between" (click)="viewResult(item.Quiz.Id)">
                 {{item.Quiz.Name}}
                 <small class="badge badge-primary badge-pill" title="no. of students">{{item.StudentCount}}</small>
               </div>

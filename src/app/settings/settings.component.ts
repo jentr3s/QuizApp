@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../shared.service';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 declare let electron: any;
 
@@ -74,6 +74,16 @@ export class SettingsComponent implements OnInit {
   addQuiz() {
     this.sharedService.changeLoggedInUserDetail(this.userInfo)
     this.router.navigate(['manageQuiz'])
+  }
+
+  viewResult(id) {
+    const routeExtras: NavigationExtras = {
+      queryParams: {
+        'quizId': id
+      }
+    }
+    this.sharedService.changeLoggedInUserDetail(this.userInfo)
+    this.router.navigate(['manageResult'], routeExtras)
   }
 
   // Load Data
