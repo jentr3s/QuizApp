@@ -41,7 +41,10 @@
       </div>
 
       <div *ngIf="questionIndex < items.length">
-        <button class="btn btn-success pull-right" (click)="next()">Next</button>
+        <button class="btn btn-success pull-right" (click)="cancel()">Cancel</button>
+      </div>
+      <div *ngIf="questionIndex < items.length">
+        <button class="btn btn-success pull-right" (click)="back()">Next</button>
       </div>
       <div *ngIf="questionIndex === items.length">
         <button class="btn btn-success pull-right" (click)="back()">Finish</button>

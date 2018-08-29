@@ -3,7 +3,7 @@
     <div class="card-header">
       <legend>Please Login</legend>
     </div>
-    <div class="errMsg" *ngIf="userInfo != error">Username or Password is invalid!</div>
+    <div class="errMsg" *ngIf="userInfo != error && loginBtnClick">Username or Password is invalid!</div>
     <div class="card-body">
       <form (ngSubmit)="login()">
         <fieldset>
@@ -46,10 +46,12 @@
               <div class="d-flex w-100 justify-content-between">
                 {{item.Quiz.Name}}
                 <small class="badge badge-primary badge-pill" title="no. of items">{{item.ItemCount}}</small>
-              
+
               </div>
             </a>
           </ul>
+
+          <button type="button" class="btn btn-warning pull-right" (click)="addQuiz()">AddQuiz</button>
 
         </div>
       </div>

@@ -13,94 +13,111 @@ export class SettingsComponent implements OnInit {
 
   // IPC Renderer
   public ipc = electron.ipcRenderer;
-  userInfo: any;
-  isLoggedIn: boolean;
+
+  userInfo: any
+  isLoggedIn: boolean
+  loginBtnClick: boolean = false
 
   // Model username and password
-  username: string;
-  password: string;
+  username: string
+  password: string
 
-  quizList: any = [];
-  quizResult: any = [];
+  quizList: any = []
+  quizResult: any = []
 
   showMainPage: boolean = false;
 
   constructor(private sharedService: SharedService, private router: Router) { }
 
   ngOnInit() {
-    this.sharedService.loggedIn.subscribe(res => this.isLoggedIn = res);
+    this.sharedService.loggedIn.subscribe(res => this.isLoggedIn = res)
+    this.sharedService.loginUser.subscribe(res => this.userInfo = res)
+
+    if (this.isLoggedIn) {
+      this.loadQuizzes()
+    }
   }
 
+  // Funtions
   login() {
-    const data = { username: this.username, password: this.password };
+    const data = { username: this.username, password: this.password }
 
-    const loggedInUser = this.ipc.sendSync('login', data);
-    this.userInfo = JSON.parse(loggedInUser);
+    const loggedInUser = this.ipc.sendSync('login', data)
+    this.userInfo = JSON.parse(loggedInUser)
+    this.loginBtnClick = true;
 
     if (this.userInfo != null && this.userInfo !== 'error') {
-      this.isLoggedIn = true;
-      this.sharedService.changeIsLoggedIn(true);
-      this.sharedService.changeLoggedInUserDetail(this.userInfo);
+      this.isLoggedIn = true
+      this.sharedService.changeIsLoggedIn(true)
+      this.sharedService.changeLoggedInUserDetail(this.userInfo)
 
-      this.loadQuizzes();
+      this.loadQuizzes()
     } else {
       console.log('Failed to login!');
     }
   }
 
   logout() {
-    this.sharedService.changeMainPage(this.showMainPage = true);
-    this.sharedService.changeIsLoggedIn(false);
-    this.sharedService.changeLoggedInUserDetail(this.userInfo = null);
-    this.router.navigate(['']);
+    // Display main page
+    this.sharedService.changeMainPage(this.showMainPage = true)
+    this.sharedService.changeIsLoggedIn(false)
+    this.sharedService.changeLoggedInUserDetail(this.userInfo = null)
+    this.router.navigate([''])
   }
 
   cancel() {
-    this.sharedService.changeMainPage(this.showMainPage = true);
-    this.router.navigate(['']);
+    // Display main page
+    this.sharedService.changeMainPage(this.showMainPage = true)
+    this.router.navigate([''])
   }
 
+  addQuiz() {
+    this.sharedService.changeLoggedInUserDetail(this.userInfo)
+    this.router.navigate(['manageQuiz'])
+  }
+
+  // Load Data
   loadQuizzes() {
-    const quizzes = this.ipc.sendSync('getQuizzes');
-    const result = JSON.parse(quizzes);
+    const quizzes = this.ipc.sendSync('getQuizzes')
+    const result = JSON.parse(quizzes)
     if (result != null) {
-      this.loadItems(result);
-      this.loadQuizResult(result);
+      this.loadItems(result)
+      this.loadQuizResult(result)
     }
   }
 
   loadItems(quizzes) {
     for (let i = 0; i < quizzes.length; i++) {
-      let itemCount = 0;
-      const id = quizzes[i].Id;
+      let itemCount = 0
+      const id = quizzes[i].Id
 
-      const items = this.ipc.sendSync('getItems', id);
-      const result = JSON.parse(items);
+      const items = this.ipc.sendSync('getItems', id)
+      const result = JSON.parse(items)
 
       if (result.length !== 0) {
-        itemCount = result.length;
+        itemCount = result.length
       }
 
-      this.quizList.push({ Quiz: quizzes[i], ItemCount: itemCount });
+      this.quizList.push({ Quiz: quizzes[i], ItemCount: itemCount })
     }
   }
 
   loadQuizResult(quizzes) {
     for (let i = 0; i < quizzes.length; i++) {
-      let studCount = 0;
-      const id = quizzes[i].Id;
+      let studCount = 0
+      const id = quizzes[i].Id
 
-      const items = this.ipc.sendSync('getQuizResult', id);
-      const result = JSON.parse(items);
+      const items = this.ipc.sendSync('getQuizResult', id)
+      const result = JSON.parse(items)
 
-      if (result !== null)
+      if (result !== null) {
         for (let j = 0; j < result.length; j++) {
           if (result[j].QuizId === quizzes[i].Id) {
-            studCount++;
+            studCount++
           }
         }
-
-      this.quizResult.push({ Quiz: quizzes[i], StudentCount: studCount });
+      }
+      this.quizResult.push({ Quiz: quizzes[i], StudentCount: studCount })
     }
   }
 }

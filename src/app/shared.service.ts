@@ -14,7 +14,7 @@ export class SharedService {
   private userLoggedIn = new BehaviorSubject<object>({ Id: 0, Name: 'empty', Username: 'empty', PermissionType: 'empty' });
   loginUser = this.userLoggedIn.asObservable();
 
-   // This is to show main page
+   // This is to know if user is logged in
    private isLoggedIn = new BehaviorSubject<boolean>(false);
    loggedIn = this.isLoggedIn.asObservable();
 
