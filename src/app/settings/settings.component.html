@@ -42,8 +42,8 @@
           <h3 class="card-title">Quizzes</h3>
 
           <ul class="list-group">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizList">
-              <div class="d-flex w-100 justify-content-between">
+            <a class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizList">
+              <div class="d-flex w-100 justify-content-between" (click)="viewQuiz(item.Quiz.Id)">
                 {{item.Quiz.Name}}
                 <small class="badge badge-primary badge-pill" title="no. of items">{{item.ItemCount}}</small>
 

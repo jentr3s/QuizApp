@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { SharedService } from '../../shared.service'
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
+
+declare let electron: any;
 
 @Component({
   selector: 'app-manage.quiz',
@@ -9,10 +11,28 @@ import { Router } from '@angular/router'
 })
 export class ManageQuizComponent implements OnInit {
 
-  isLoggedIn: boolean
-  userInfo: any
+  // IPC Renderer
+  public ipc = electron.ipcRenderer;
 
-  constructor(private sharedService: SharedService, private router: Router) { }
+  isLoggedIn: boolean = false
+  userInfo: any
+  isCreate: boolean = false
+  quizId: any
+  quiz: any
+
+  constructor(private sharedService: SharedService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.quizId = Number(params['quizId'])
+      this.isCreate = params['isCreateQuiz'] === 'true' ? true : false
+    })
+
+    if (!this.isCreate) {
+      this.loadQuizzes(this.quizId)
+    }
+  }
 
   ngOnInit() {
     this.sharedService.loggedIn.subscribe(res => this.isLoggedIn = res)
@@ -23,6 +43,12 @@ export class ManageQuizComponent implements OnInit {
     this.sharedService.changeIsLoggedIn(true)
     this.sharedService.changeLoggedInUserDetail(this.userInfo)
     this.router.navigate(['settings'])
+  }
+
+  // Load Data
+  loadQuizzes(id) {
+    const quiz = this.ipc.sendSync('getQuizById', id)
+    this.quiz = JSON.parse(quiz)
   }
 
 }

@@ -73,6 +73,20 @@ function createWindow() {
 
     })
 
+    // Load QuizById
+    ipcMain.on("getQuizById", (event, arg) => {
+        let result = knex('Quizzes').where({
+            Id: arg,
+        }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
+        result.then((quiz) => {
+            event.returnValue = JSON.stringify(quiz[0])
+        })
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        })
+
+    })
+
     // Load Items
     ipcMain.on("getItems", (event, arg) => {
         let items = knex('Items').where({
@@ -87,8 +101,8 @@ function createWindow() {
         })
     })
 
-     // Load Quiz Result
-     ipcMain.on("getQuizResult", (event, arg) => {
+    // Load Quiz Result
+    ipcMain.on("getQuizResult", (event, arg) => {
         let results = knex('QuizResults').where({
             QuizId: arg
         }).select('Id', 'QuizId', 'StudentName', 'Result', 'Answers', 'Score', 'Items')

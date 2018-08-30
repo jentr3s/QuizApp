@@ -72,8 +72,14 @@ export class SettingsComponent implements OnInit {
   }
 
   addQuiz() {
+    const routeExtras: NavigationExtras = {
+      queryParams: {
+        'isCreateQuiz': true
+      }
+    }
+
     this.sharedService.changeLoggedInUserDetail(this.userInfo)
-    this.router.navigate(['manageQuiz'])
+    this.router.navigate(['manageQuiz'], routeExtras)
   }
 
   viewResult(id) {
@@ -85,6 +91,18 @@ export class SettingsComponent implements OnInit {
     this.sharedService.changeLoggedInUserDetail(this.userInfo)
     this.router.navigate(['manageResult'], routeExtras)
   }
+
+  viewQuiz(id) {
+    const routeExtras: NavigationExtras = {
+      queryParams: {
+        'quizId': id
+      }
+    }
+
+    this.sharedService.changeLoggedInUserDetail(this.userInfo)
+    this.router.navigate(['manageQuiz'], routeExtras)
+  }
+
 
   // Load Data
   loadQuizzes() {

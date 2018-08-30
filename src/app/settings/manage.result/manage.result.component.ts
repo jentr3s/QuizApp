@@ -32,7 +32,7 @@ export class ManageResultComponent implements OnInit {
     private pagerService: PagerService) {
 
     this.activatedRoute.queryParams.subscribe(params => {
-      this.quizId = params['quizId'];
+      this.quizId = params['quizId']
       this.loadQuizResult(this.quizId)
 
       // initialize to page 1
