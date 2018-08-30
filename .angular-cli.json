@@ -20,7 +20,7 @@
       "prefix": "app",
       "styles": [
         "styles.scss",
-        "../node_modules/bootstrap/dist/css/bootstrap.flatly.min.css",
+        "../node_modules/bootstrap/dist/css/bootstrap.lux.min.css",
         "../node_modules/@fortawesome/fontawesome-free/css/all.css"
       ],
       "scripts": [

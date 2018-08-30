@@ -14,6 +14,7 @@ import { QuizComponent } from './quiz/quiz.component';
 import { ManageQuizComponent } from './settings/manage.quiz/manage.quiz.component';
 import { ManageResultComponent } from './settings/manage.result/manage.result.component';
 
+import { PagerService } from './_shared/index';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { ManageResultComponent } from './settings/manage.result/manage.result.co
 
     NgbModule.forRoot()
   ],
-  providers: [SharedService],
+  providers: [SharedService, PagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

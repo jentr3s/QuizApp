@@ -8,7 +8,7 @@
     <!-- Student Name -->
     <div *ngIf="!hasName" class="studNameDiv">
       <label for="staticName" class="col-sm-2 col-form-label studNameLabel">Name</label>
-      <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control {{isValid}}" id="txtName" placeholder="Please enter your name">
+      <input type="text" [(ngModel)]="studentName" name="txtName" class="form-control {{isValid}} customBg" id="txtName" placeholder="Please enter your name">
       <div class="invalid-feedback" *ngIf="isValid != null">{{errorMsg}}</div>
     </div>
 
@@ -23,12 +23,12 @@
               <legend>{{item.Question}}</legend>
               <div *ngIf="item.QuestionTypeId == 1">
                 <div class="custom-control custom-radio" *ngFor="let option of item.Options; let idx = index">
-                  <input type="radio" id="customRadio{{idx}}" name="customRadio" class="custom-control-input" (change)="onSelectionChange(option, item.Id)">
+                  <input type="radio" id="customRadio{{idx}}" name="customRadio" class="custom-control-input customBg" (change)="onSelectionChange(option, item.Id)">
                   <label class="custom-control-label" for="customRadio{{idx}}">{{option}}</label>
                 </div>
               </div>
               <div *ngIf="item.QuestionTypeId == 2">
-                <input type="text" [(ngModel)]="answerInput" name="txtAnswer" class="form-control {{noAnswer}}" id="txtAnswer">
+                <input type="text" [(ngModel)]="answerInput" name="txtAnswer" class="form-control {{noAnswer}} customBg" id="txtAnswer">
 
                 <input type="hidden" #var [value]="item.Id" />
 
@@ -41,26 +41,26 @@
       </div>
 
       <div *ngIf="questionIndex < items.length">
-        <button class="btn btn-success pull-right" (click)="cancel()">Cancel</button>
+        <button class="btn btn-primary btn-sm float-right" (click)="next()">Next</button>
       </div>
-      <div *ngIf="questionIndex < items.length">
-        <button class="btn btn-success pull-right" (click)="back()">Next</button>
-      </div>
-      <div *ngIf="questionIndex === items.length">
-        <button class="btn btn-success pull-right" (click)="back()">Finish</button>
-      </div>
-
 
     </div>
     <!-- End Of Question -->
 
     <!-- Result -->
-    <div *ngIf="questionIndex == items.length">
-      <span>Hi {{studentName}}! </span>
-      <span>Your Total Score is {{score}} / {{items.length}}</span>
-      <span class="text-success" *ngIf="passed">YOU PASSED </span>
-      <span class="text-danger" *ngIf="failed">YOU FAILED </span>
-      
+    <div *ngIf="questionIndex == items.length" style="padding-top: 20px;">
+      <div *ngIf="passed" class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert" (click)="back()">&times;</button>
+        <h4 class="alert-heading">Well done! YOU'VE PASSED!</h4>
+      </div>
+
+      <div class="alert alert-dismissible alert-danger" *ngIf="failed">
+        <button type="button" class="close" data-dismiss="alert" (click)="back()">&times;</button>
+        <h4 class="alert-heading">SORRY! YOU FAILED!</h4>
+      </div>
+      <br />
+      <span>Hi <span class="text-info">{{studentName}}!</span></span>
+      <span>Your score is {{score}} / {{items.length}}</span>
     </div>
 
   </form>

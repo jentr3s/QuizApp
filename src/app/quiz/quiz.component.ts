@@ -57,6 +57,8 @@ export class QuizComponent implements OnInit {
   }
 
   next() {
+    this.noAnswer = null
+    this.errorMsg = null
     if (this.validate()) {
       this.questionIndex++;
       this.hasName = true;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { SharedService } from '../../shared.service'
 import { Router, ActivatedRoute } from '@angular/router'
+import { PagerService } from '../../_shared/index';
 
 declare let electron: any;
 
@@ -17,15 +18,25 @@ export class ManageResultComponent implements OnInit {
   isLoggedIn: boolean
   userInfo: any
   quizId: any
+
   results: Object[] = []
+  // pager object
+  pager: any = {};
+
+  // paged items
+  pagedItems: any[];
 
   constructor(private sharedService: SharedService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private pagerService: PagerService) {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.quizId = params['quizId'];
       this.loadQuizResult(this.quizId)
+
+      // initialize to page 1
+      this.setPage(1);
     })
 
   }
@@ -33,6 +44,14 @@ export class ManageResultComponent implements OnInit {
   ngOnInit() {
     this.sharedService.loggedIn.subscribe(res => this.isLoggedIn = res)
     this.sharedService.loginUser.subscribe(res => this.userInfo = res)
+  }
+
+  setPage(page: number) {
+    // get pager object from service
+    this.pager = this.pagerService.getPager(this.results.length, page);
+
+    // get current page of items
+    this.pagedItems = this.results.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 
   loadQuizResult(quizId) {
