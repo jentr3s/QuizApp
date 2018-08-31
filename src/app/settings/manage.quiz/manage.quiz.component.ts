@@ -48,7 +48,10 @@ export class ManageQuizComponent implements OnInit {
   // Load Data
   loadQuizzes(id) {
     const quiz = this.ipc.sendSync('getQuizById', id)
-    this.quiz = JSON.parse(quiz)
+    const quizObj = JSON.parse(quiz)
+
+    quizObj.IsActive = quizObj.IsActive === 1 ? true : false
+    this.quiz = quizObj
   }
 
 }

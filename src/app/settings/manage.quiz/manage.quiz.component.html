@@ -4,34 +4,34 @@
 </div>
 
 
-<div *ngIf="isLoggedIn && !isCreate">
+<div *ngIf="isLoggedIn && !isCreate" class="bd-example">
   <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
+  <form>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control customBg" id="name" required [(ngModel)]="quiz.Name" name="name">
+    </div>
 
-  Quiz Name: <span>{{quiz.Name}}</span>
-  Quiz Description: <span>{{quiz.Description}}</span>
-  Prepared By: <span>{{quiz.PreparedBy}}</span>
-  Active: <span>{{quiz.IsActive}}</span>
+    <div class="form-group">
+      <label for="desc">Description</label>
+      <input type="text" class="form-control customBg" id="desc" required [(ngModel)]="quiz.Description" name="desc">
+    </div>
 
-  <div class="modal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{quiz.Name}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Modal body text goes here.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Save changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+    <div class="form-group">
+      <label for="prep">Description</label>
+      <input type="text" class="form-control customBg" id="prep" required [(ngModel)]="quiz.PreparedBy" name="prep">
+    </div>
+
+    <div class="form-group">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="isActive" [(ngModel)]="quiz.IsActive" [checked]="quiz.IsActive">
+        <label class="custom-control-label" for="isActive">Active</label>
       </div>
     </div>
-  </div>
 
+    <button type="submit" class="btn btn-success btn-sm float-right">Submit</button>
 
-  <button type="button" class="btn btn-warning btn-sm float-right" (click)="back()">Back</button>
+    <button type="button" class="btn btn-secondary btn-sm float-right" (click)="back()">Cancel</button>
+  </form>
+
 </div>
