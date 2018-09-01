@@ -54,4 +54,19 @@ export class ManageQuizComponent implements OnInit {
     this.quiz = quizObj
   }
 
+  // Update Quiz
+  updateQuiz(quiz) {
+    // const quizModel = {
+    //   Id: this.quizId,
+    //   Name: quiz.Name,
+    //   Description: quiz.Description,
+    //   PreparedBy: quiz.PreparedBy,
+    //   IsActive: quiz.IsActive === true ? 1 : 0
+    // }
+
+    // const result = this.ipc.sendSync('putQuiz', quizModel)
+    // console.log(result)
+    console.log(quiz)
+  }
+
 }

@@ -18,7 +18,7 @@ let knex = require("knex")({
 function createWindow() {
     win = new BrowserWindow({
         width: 800,
-        height: 600
+        height: 600,
     })
 
     // load the dist folder from Angular
@@ -31,6 +31,7 @@ function createWindow() {
     // Open the DevTools optionally:
     // win.webContents.openDevTools()
 
+    ////////////////////////////// USER /////////////////////////////
     // Login
     ipcMain.on("login", (event, arg) => {
         let result = knex('Users').where({
@@ -46,6 +47,19 @@ function createWindow() {
             })
     })
 
+    // Load users
+    ipcMain.on("getUsers", (event, arg) => {
+        let result = knex.select('Name').from('Users')
+        result.then((rows) => {
+            win.webContents.send('users', rows)
+        })
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        })
+    })
+    ////////////////////////////// END USER /////////////////////////////
+
+    ////////////////////////////// QUIZZES /////////////////////////////
     // Load Quizzes
     ipcMain.on("getQuizzes", (event, arg) => {
         if (arg === undefined) {
@@ -59,7 +73,7 @@ function createWindow() {
         }
     })
 
-    // Load Quiz
+    // Load QuizByIsActive = true
     ipcMain.on("getQuiz", (event, arg) => {
         let result = knex('Quizzes').where({
             IsActive: 1,
@@ -87,20 +101,6 @@ function createWindow() {
 
     })
 
-    // Load Items
-    ipcMain.on("getItems", (event, arg) => {
-        let items = knex('Items').where({
-            QuizId: arg
-        }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', 'Options')
-        items.then((data) => {
-            // result is always an array
-            event.returnValue = JSON.stringify(data)
-        })
-        items.catch((err) => {
-            event.returnValue = JSON.stringify('error')
-        })
-    })
-
     // Load Quiz Result
     ipcMain.on("getQuizResult", (event, arg) => {
         let results = knex('QuizResults').where({
@@ -116,7 +116,7 @@ function createWindow() {
     })
 
     // Insert Quiz Result
-    ipcMain.on("putQuizResult", (event, arg) => {
+    ipcMain.on("postQuizResult", (event, arg) => {
         let result = knex.insert(arg).into('QuizResults')
         result.then((id) => {
             event.returnValue = JSON.stringify(id)
@@ -126,19 +126,44 @@ function createWindow() {
         })
     })
 
-    // Load users
-    ipcMain.on("getUsers", (event, arg) => {
-        let result = knex.select('Name').from('Users')
-        result.then((rows) => {
-            win.webContents.send('users', rows)
+    // Update QuizById
+    ipcMain.on("putQuiz", (event, arg) => {
+        let result = knex.where('QuizId', '=', arg.QuizId)
+            .update({
+                Name: arg.Name,
+                Description: arg.Description,
+                PreparedBy: arg.PreparedBy,
+                IsActive: arg.IsActive
+            })
+        result.then((id) => {
+            event.returnValue = JSON.stringify(id)
         })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')
         })
     })
+    ////////////////////////////// END QUIZZES /////////////////////////////
 
+    ////////////////////////////// ITEMS ///////////////////////////////////
+    // Load Items
+    ipcMain.on("getItems", (event, arg) => {
+        let items = knex('Items').where({
+            QuizId: arg
+        }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', 'Options')
+        items.then((data) => {
+            // result is always an array
+            event.returnValue = JSON.stringify(data)
+        })
+        items.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        })
+    })
+
+    ////////////////////////////// END ITEMS ///////////////////////////////////
+
+    ////////////////////////////// OPTION ///////////////////////////////////
     // Insert Options
-    ipcMain.on("putOptions", (event, arg) => {
+    ipcMain.on("postOptions", (event, arg) => {
         let result = knex.insert(arg).into("Options")
         result.then(function (id) {
             win.webContents.send('insertedId', id)
@@ -147,6 +172,7 @@ function createWindow() {
             event.returnValue = JSON.stringify('error')
         })
     })
+    ////////////////////////////// END OPTION ////////////////////////////////
 
     win.on('closed', () => {
         win = null
