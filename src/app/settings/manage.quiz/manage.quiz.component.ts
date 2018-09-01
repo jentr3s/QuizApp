@@ -48,25 +48,36 @@ export class ManageQuizComponent implements OnInit {
   // Load Data
   loadQuizzes(id) {
     const quiz = this.ipc.sendSync('getQuizById', id)
-    const quizObj = JSON.parse(quiz)
+    if (quiz) {
+      const quizObj = JSON.parse(quiz)
 
-    quizObj.IsActive = quizObj.IsActive === 1 ? true : false
-    this.quiz = quizObj
+      quizObj[0].IsActive = quizObj[0].IsActive === 1 ? true : false
+      this.quiz = quizObj[0]
+    }
   }
 
   // Update Quiz
   updateQuiz(quiz) {
-    // const quizModel = {
-    //   Id: this.quizId,
-    //   Name: quiz.Name,
-    //   Description: quiz.Description,
-    //   PreparedBy: quiz.PreparedBy,
-    //   IsActive: quiz.IsActive === true ? 1 : 0
-    // }
+    const quizModel = {
+      Id: this.quizId,
+      Name: quiz.Name,
+      Description: quiz.Description,
+      PreparedBy: quiz.PreparedBy,
+      IsActive: quiz.IsActive === true ? 1 : 0
+    }
 
-    // const result = this.ipc.sendSync('putQuiz', quizModel)
-    // console.log(result)
-    console.log(quiz)
+    // For setting active quiz
+    if (quizModel.IsActive) {
+      const activeQuiz = this.ipc.sendSync('getActiveQuiz')
+      const parseQuiz = JSON.parse(activeQuiz)
+
+      if (parseQuiz.length > 0 && parseQuiz[0].Id !== this.quizId) {
+        return console.log('Unable to Update')
+      }
+    }
+
+    const result = this.ipc.sendSync('putQuiz', quizModel)
+    console.log(JSON.parse(result))
   }
 
 }

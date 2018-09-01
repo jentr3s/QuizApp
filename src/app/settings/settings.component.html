@@ -42,7 +42,8 @@
           <h3 class="card-title">Quizzes</h3>
 
           <ul class="list-group">
-            <a class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizList">
+            <a class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizList"
+              style="cursor:pointer;">
               <div class="d-flex w-100 justify-content-between" (click)="viewQuiz(item.Quiz.Id)">
                 {{item.Quiz.Name}}
                 <small class="badge badge-primary badge-pill" title="no. of items">{{item.ItemCount}}</small>
@@ -63,7 +64,8 @@
           <h3 class="card-title">Quiz Results</h3>
 
           <ul class="list-group">
-            <a class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizResult">
+            <a class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizResult"
+              style="cursor:pointer;">
               <div class="d-flex justify-content-between" (click)="viewResult(item.Quiz.Id)">
                 {{item.Quiz.Name}}
                 <small class="badge badge-primary badge-pill" title="no. of students">{{item.StudentCount}}</small>

@@ -74,12 +74,12 @@ function createWindow() {
     })
 
     // Load QuizByIsActive = true
-    ipcMain.on("getQuiz", (event, arg) => {
+    ipcMain.on("getActiveQuiz", (event, arg) => {
         let result = knex('Quizzes').where({
             IsActive: 1,
         }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
         result.then((quiz) => {
-            event.returnValue = JSON.stringify(quiz[0])
+            event.returnValue = JSON.stringify(quiz)
         })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')
@@ -93,7 +93,7 @@ function createWindow() {
             Id: arg,
         }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
         result.then((quiz) => {
-            event.returnValue = JSON.stringify(quiz[0])
+            event.returnValue = JSON.stringify(quiz)
         })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')
@@ -128,15 +128,10 @@ function createWindow() {
 
     // Update QuizById
     ipcMain.on("putQuiz", (event, arg) => {
-        let result = knex.where('QuizId', '=', arg.QuizId)
-            .update({
-                Name: arg.Name,
-                Description: arg.Description,
-                PreparedBy: arg.PreparedBy,
-                IsActive: arg.IsActive
-            })
-        result.then((id) => {
-            event.returnValue = JSON.stringify(id)
+        console.log(arg)
+        let result = knex('Quizzes').where('Id', '=', arg.Id).update(arg)
+        result.then((res) => {
+            event.returnValue = JSON.stringify(res)
         })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')
