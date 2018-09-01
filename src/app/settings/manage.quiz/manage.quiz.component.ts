@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { SharedService } from '../../shared.service'
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
 
-declare let electron: any;
+declare let electron: any
 
 @Component({
   selector: 'app-manage.quiz',
@@ -43,6 +43,17 @@ export class ManageQuizComponent implements OnInit {
     this.sharedService.changeIsLoggedIn(true)
     this.sharedService.changeLoggedInUserDetail(this.userInfo)
     this.router.navigate(['settings'])
+  }
+
+  viewOptions(id) {
+    const routeExtras: NavigationExtras = {
+      queryParams: {
+        'quizId': id
+      }
+    }
+
+    this.sharedService.changeLoggedInUserDetail(this.userInfo)
+    this.router.navigate(['manageOptions'], routeExtras)
   }
 
   // Load Data
