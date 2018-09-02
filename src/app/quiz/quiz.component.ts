@@ -44,8 +44,11 @@ export class QuizComponent implements OnInit {
 
   loadQuiz() {
     const result = this.ipc.sendSync('getActiveQuiz')
-    this.quiz = JSON.parse(result)
-    this.loadItems(this.quiz.Id)
+    const parseQuiz = JSON.parse(result)
+    if (parseQuiz) {
+      this.quiz = parseQuiz[0]
+      this.loadItems(this.quiz.Id)
+    }
   }
 
   loadItems(quizId: any) {

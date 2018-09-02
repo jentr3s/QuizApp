@@ -48,7 +48,8 @@ export class ManageQuizComponent implements OnInit {
   viewOptions(id) {
     const routeExtras: NavigationExtras = {
       queryParams: {
-        'quizId': id
+        'quizId': id,
+        'quizName': this.quiz.Name
       }
     }
 

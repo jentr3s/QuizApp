@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 
 import { SharedService } from '../../shared.service'
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
+import { PagerService } from '../../_shared';
 
 declare let electron: any
 
@@ -11,19 +12,34 @@ declare let electron: any
   styleUrls: ['./manage.options.component.scss']
 })
 export class ManageOptionsComponent implements OnInit {
+  // IPC Renderer
+  public ipc = electron.ipcRenderer;
 
   isLoggedIn: boolean = false
   userInfo: any
   quizId: any
+  quizName: string
+  items: Object[] = []
+
+  // pager object
+  pager: any = {};
+  // paged items
+  pagedItems: any[]
+
+  questionType: any
 
   constructor(private sharedService: SharedService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private pagerService: PagerService) {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.quizId = Number(params['quizId'])
-
+      this.quizName = String(params['quizName'])
       this.loadOptions(this.quizId)
+
+      // initialize to page 1
+      this.setPage(1);
     })
 
   }
@@ -31,6 +47,25 @@ export class ManageOptionsComponent implements OnInit {
   ngOnInit() {
     this.sharedService.loggedIn.subscribe(res => this.isLoggedIn = res)
     this.sharedService.loginUser.subscribe(res => this.userInfo = res)
+
+    this.questionType = [
+      {
+        id: 1,
+        value: 'Multiple Choice'
+      },
+      {
+        id: 2,
+        value: 'Fill in the blank'
+      }]
+  }
+
+
+  setPage(page: number) {
+    // get pager object from service
+    this.pager = this.pagerService.getPager(this.items.length, page);
+
+    // get current page of items
+    this.pagedItems = this.items.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 
   back() {
@@ -44,6 +79,9 @@ export class ManageOptionsComponent implements OnInit {
     this.router.navigate(['manageQuiz'], routeExtras)
   }
 
-  loadOptions(id) { }
+  loadOptions(quizId) {
+    const result = this.ipc.sendSync('getItems', quizId)
+    this.items = JSON.parse(result)
+  }
 
 }
