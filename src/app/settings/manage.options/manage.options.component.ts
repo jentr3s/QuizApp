@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core'
 import { SharedService } from '../../shared.service'
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
 import { PagerService } from '../../_shared';
+import { NgForm } from '@angular/forms';
 
 declare let electron: any
 
@@ -19,7 +20,7 @@ export class ManageOptionsComponent implements OnInit {
   userInfo: any
   quizId: any
   quizName: string
-  items: Object[] = []
+  items: any[] = []
 
   // pager object
   pager: any = {};
@@ -27,6 +28,8 @@ export class ManageOptionsComponent implements OnInit {
   pagedItems: any[]
 
   questionType: any
+  optionsForm: any
+  indexNo: any
 
   constructor(private sharedService: SharedService,
     private router: Router,
@@ -82,6 +85,15 @@ export class ManageOptionsComponent implements OnInit {
   loadOptions(quizId) {
     const result = this.ipc.sendSync('getItems', quizId)
     this.items = JSON.parse(result)
+    for (let i = 0; i < this.items.length; i++) {
+      this.items[i].QuestionTypeId = this.items[i].QuestionTypeId == 1 ? 'Multiple Choice' : 'Fill in the blank'
+      this.items[i].Options = JSON.parse(this.items[i].Options)
+    }
+  }
+
+  updateOptions(optionForm: NgForm) {
+    
+    console.log(optionForm.value)
   }
 
 }

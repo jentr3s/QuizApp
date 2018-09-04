@@ -1,12 +1,13 @@
 <div *ngIf="isLoggedIn" class="bd-example">
   <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
   <button type="button" class="btn btn-warning btn-sm float-right" (click)="back()">Back</button>
-
-  <form>
+  <br /><br />
+  <form (ngSubmit)="updateOptions(optionForm)" #optionForm="ngForm">
     <table class="table table-bordered table-sm" data-pagination="true" data-id-field="name" data-page-list="[5, 10, 25, 50, 100, ALL]"
       data-page-size="5">
       <thead class="thead-dark">
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Question</th>
           <th scope="col" style="text-align: center;">Question Type</th>
           <th scope="col">Answer</th>
@@ -14,19 +15,34 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of pagedItems">
-          <td>{{item.Question}}</td>
+        <tr *ngFor="let item of pagedItems; let i=index">
+          <th scope="row" style="font-weight: bold;color: black;">{{(pager.currentPage - 1) * pager.pageSize + i +1}}</th>
+          <td>
+            <div class="form-group">
+              <input type="text" class="form-control customBg" [(ngModel)]="pagedItems[i].Question" name="question{{i}}" id="question{{i}}"
+                required>
+            </div>
+          </td>
           <td style="width: 14em;">
             <div class="form-group">
-              <select class="custom-select" (change)="filterForeCasts($event.target.value)">
-                <option *ngFor="let type of questionType" [value]="item.id" [selected]="type.id == item.QuestionTypeId">
+              <select class="custom-select" [(ngModel)]="pagedItems[i].QuestionTypeId" name="questionTypeId{{i}}">
+                <option *ngFor="let type of questionType" [selected]="type.value == pagedItems[i].QuestionTypeId">
                   {{type.value}}
                 </option>
               </select>
             </div>
           </td>
-          <td>{{item.Answer}}</td>
-          <td>{{item.Options}}</td>
+          <td>
+            <div class="form-group">
+              <input type="text" class="form-control customBg" [(ngModel)]="pagedItems[i].Answer" name="answer{{i}}" id="answer{{i}}" required>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <input type="text" class="form-control customBg" [(ngModel)]="pagedItems[i].Options" name="options{{i}}" id="options{{i}}"
+                required>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -42,7 +58,9 @@
         <li class="page-item"><a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a></li>
         <li class="page-item"><a class="page-link" (click)="setPage(pager.totalPages)">Last</a></li>
       </ul>
-    </nav>
-
+    </nav><br /><br />
+    <button type="submit" class="btn btn-success btn-sm float-right">
+      <i class="fas fa-save" style="padding-right: 2px;"></i>
+      Submit</button>
   </form>
 </div>
