@@ -2,11 +2,20 @@
   <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
   <button type="button" class="btn btn-warning btn-sm float-right" (click)="back()">Back</button>
   <br /><br />
-  <form (ngSubmit)="updateOptions(optionForm)" #optionForm="ngForm">
-    <table class="table table-bordered table-sm" data-pagination="true" data-id-field="name" data-page-list="[5, 10, 25, 50, 100, ALL]"
-      data-page-size="5">
+  <form (ngSubmit)="updateOptions(items)" #optionForm="ngForm">
+    <table class="table table-bordered table-sm" id="dataTable">
       <thead class="thead-dark">
         <tr>
+          <th scope="col">
+            <!-- <input type="checkbox" [(ngModel)]="selectedAll" (click)="checkAll()" [ngModelOptions]="{standalone: true}" /> -->
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [(ngModel)]="selectedAll" (click)="checkAll()" [ngModelOptions]="{standalone: true}"
+                  id="selectAll">
+                <label class="custom-control-label" for="selectAll"></label>
+              </div>
+            </div>
+          </th>
           <th scope="col">#</th>
           <th scope="col">Question</th>
           <th scope="col" style="text-align: center;">Question Type</th>
@@ -15,18 +24,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of pagedItems; let i=index">
-          <th scope="row" style="font-weight: bold;color: black;">{{(pager.currentPage - 1) * pager.pageSize + i +1}}</th>
+        <tr *ngFor="let item of items; let i=index">
           <td>
             <div class="form-group">
-              <input type="text" class="form-control customBg" [(ngModel)]="pagedItems[i].Question" name="question{{i}}" id="question{{i}}"
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" [(ngModel)]="item.Selected" id="check{{i}}" name="check{{i}}">
+                <label class="custom-control-label" for="check{{i}}"></label>
+              </div>
+            </div>
+            <!-- <input class="custom-control custom-checkbox" type="checkbox" [(ngModel)]="item.Selected" name="check{{i}}"/> -->
+          </td>
+          <!-- <th scope="row" style="font-weight: bold;color: black;">{{(pager.currentPage - 1) * pager.pageSize + i +1}}</th> -->
+          <th scope="row" style="font-weight: bold;color: black;">{{i+1}}</th>
+          <td>
+            <div class="form-group">
+              <input type="text" class="form-control customBg" [(ngModel)]="items[i].Question" name="question{{i}}" id="question{{i}}"
                 required>
             </div>
           </td>
           <td style="width: 14em;">
             <div class="form-group">
-              <select class="custom-select" [(ngModel)]="pagedItems[i].QuestionTypeId" name="questionTypeId{{i}}">
-                <option *ngFor="let type of questionType" [selected]="type.value == pagedItems[i].QuestionTypeId">
+              <select class="custom-select" [(ngModel)]="items[i].QuestionTypeId" name="questionTypeId{{i}}">
+                <option *ngFor="let type of questionType" [selected]="type.value == items[i].QuestionTypeId">
                   {{type.value}}
                 </option>
               </select>
@@ -34,13 +53,12 @@
           </td>
           <td>
             <div class="form-group">
-              <input type="text" class="form-control customBg" [(ngModel)]="pagedItems[i].Answer" name="answer{{i}}" id="answer{{i}}" required>
+              <input type="text" class="form-control customBg" [(ngModel)]="items[i].Answer" name="answer{{i}}" id="answer{{i}}" required>
             </div>
           </td>
           <td>
             <div class="form-group">
-              <input type="text" class="form-control customBg" [(ngModel)]="pagedItems[i].Options" name="options{{i}}" id="options{{i}}"
-                required>
+              <input type="text" class="form-control customBg" [(ngModel)]="items[i].Options" name="options{{i}}" id="options{{i}}" required>
             </div>
           </td>
         </tr>
@@ -48,7 +66,7 @@
     </table>
 
     <!-- pager -->
-    <nav>
+    <!-- <nav>
       <ul class="pagination pagination-sm float-right" *ngIf="pager.pages && pager.pages.length">
         <li class="page-item"><a class="page-link" (click)="setPage(1)">First</a></li>
         <li class="page-item"><a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a></li>
@@ -58,7 +76,11 @@
         <li class="page-item"><a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a></li>
         <li class="page-item"><a class="page-link" (click)="setPage(pager.totalPages)">Last</a></li>
       </ul>
-    </nav><br /><br />
+    </nav> <br /> <br />-->
+    <button type="button" class="btn btn-danger btn-sm float-right" (click)="removeOption()"><i class="fas fa-trash-alt"></i>
+      Remove</button>
+    <button type="button" class="btn btn-secondary btn-sm float-right" (click)="addOption()"><i class="fas fa-plus"></i>
+      Add</button><br /><br />
     <button type="submit" class="btn btn-success btn-sm float-right">
       <i class="fas fa-save" style="padding-right: 2px;"></i>
       Submit</button>

@@ -30,6 +30,7 @@ export class ManageOptionsComponent implements OnInit {
   questionType: any
   optionsForm: any
   indexNo: any
+  selectedAll: boolean
 
   constructor(private sharedService: SharedService,
     private router: Router,
@@ -86,14 +87,52 @@ export class ManageOptionsComponent implements OnInit {
     const result = this.ipc.sendSync('getItems', quizId)
     this.items = JSON.parse(result)
     for (let i = 0; i < this.items.length; i++) {
+      this.items[i].Selected = false
       this.items[i].QuestionTypeId = this.items[i].QuestionTypeId == 1 ? 'Multiple Choice' : 'Fill in the blank'
-      this.items[i].Options = JSON.parse(this.items[i].Options)
+      if (this.items[i].Options && this.items[i].Options !== null) {
+        const options = JSON.parse(this.items[i].Options)
+        this.items[i].Options = options.toString()
+      }
     }
   }
 
-  updateOptions(optionForm: NgForm) {
-    
-    console.log(optionForm.value)
+  addOption() {
+    this.items.push({
+      Question: '',
+      QuestionTypeId: '',
+      Answer: '',
+      QuizId: '',
+      Options: ''
+    })
+  }
+  checkAll() {
+    if (!this.selectedAll) {
+      this.selectedAll = true;
+    } else {
+      this.selectedAll = false;
+    }
+    this.items.forEach(item => {
+      item.Selected = this.selectedAll
+    })
+
+  }
+
+  removeOption() {
+    let newDataList = []
+    this.selectedAll = false
+
+    this.items.forEach(item => {
+      if (!item.Selected) {
+        newDataList.push(item)
+      }
+    })
+
+    this.items = newDataList;
+  }
+
+  updateOptions(items: any) {
+
+    console.log(items)
   }
 
 }
