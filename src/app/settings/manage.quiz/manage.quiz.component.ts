@@ -3,6 +3,7 @@ import { SharedService } from '../../shared.service'
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
 
 declare let electron: any
+const { dialog } = electron.remote
 
 @Component({
   selector: 'app-manage.quiz',
@@ -25,6 +26,8 @@ export class ManageQuizComponent implements OnInit {
     PreparedBy: null,
     IsActive: false
   }
+  showAlertSuccess: boolean = false
+  showAlertError: boolean = false
 
   constructor(private sharedService: SharedService,
     private router: Router,
@@ -111,7 +114,20 @@ export class ManageQuizComponent implements OnInit {
       }
 
       const result = this.ipc.sendSync('putQuiz', quizModel)
-      console.log(JSON.parse(result))
+      const res = JSON.parse(result)
+      if (res && res !== 'error') {
+        this.showAlertSuccess = true
+        setTimeout(() => {
+          document.getElementById('fadeSuccess').className = 'fadeOut'
+          this.showAlertSuccess = false
+        }, 2500)
+      } else {
+        this.showAlertError = true
+        setTimeout(() => {
+          document.getElementById('fadeError').className = 'fadeOut'
+          this.showAlertError = false
+        }, 2500)
+      }
     }
   }
 

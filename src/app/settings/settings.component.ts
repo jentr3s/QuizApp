@@ -24,8 +24,7 @@ export class SettingsComponent implements OnInit {
 
   quizList: any = []
   quizResult: any = []
-
-  showMainPage: boolean = false;
+  showMainPage: boolean = false
 
   constructor(private sharedService: SharedService, private router: Router) { }
 

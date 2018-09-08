@@ -1,6 +1,14 @@
 <!-- Update Quiz -->
 <div *ngIf="isLoggedIn" class="bd-example">
   <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
+
+  <div class="alert alert-dismissible alert-success" id="fadeSuccess" *ngIf="showAlertSuccess">
+    <strong>Successfully saved quiz</strong>
+  </div>
+  <div class="alert alert-dismissible alert-danger" id="fadeError" *ngIf="showAlertError">
+    <strong>Oh snap!</strong> Change a few things up and try submitting again.
+  </div>
+
   <form (ngSubmit)="updateQuiz(quiz)">
     <div class="form-group">
       <label for="name">Name</label>

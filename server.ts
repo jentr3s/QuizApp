@@ -170,13 +170,13 @@ function createWindow() {
     ////////////////////////////// OPTION ///////////////////////////////////
     // Insert Options
     ipcMain.on('postOptions', async (event, arg) => {
-        let result = await knex('Items').insert(arg)
-        result.then((id) => {
-            event.returnValue = JSON.stringify(id)
-        })
-        result.catch((err) => {
-            event.returnValue = JSON.stringify('error')
-        })
+        try {
+            let result = await knex('Items').insert(arg)
+            event.returnValue = JSON.stringify(result)
+        } catch (ex) {
+            console.log(ex)
+            event.returnValue = JSON.stringify(ex)
+        }
     })
 
     // Update Options

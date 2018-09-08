@@ -2,6 +2,13 @@
   <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
   <button type="button" class="btn btn-warning btn-sm float-right" (click)="back()">Back</button>
   <br /><br />
+
+  <div class="alert alert-dismissible alert-success" id="fadeSuccess" *ngIf="showAlertSuccess">
+    <strong>Successfully saved quiz</strong>
+  </div>
+  <div class="alert alert-dismissible alert-danger" id="fadeError" *ngIf="showAlertError">
+    <strong>Oh snap!</strong> Change a few things up and try submitting again.
+  </div>
   <form (ngSubmit)="updateOptions(items)" #optionForm="ngForm">
     <table class="table table-bordered table-sm" id="dataTable">
       <thead class="thead-dark">
@@ -10,8 +17,8 @@
             <!-- <input type="checkbox" [(ngModel)]="selectedAll" (click)="checkAll()" [ngModelOptions]="{standalone: true}" /> -->
             <div class="form-group">
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" [(ngModel)]="selectedAll" (click)="checkAll()" [ngModelOptions]="{standalone: true}"
-                  id="selectAll">
+                <input type="checkbox" class="custom-control-input" [(ngModel)]="selectedAll" (click)="checkAll()"
+                  [ngModelOptions]="{standalone: true}" id="selectAll">
                 <label class="custom-control-label" for="selectAll"></label>
               </div>
             </div>
@@ -53,12 +60,14 @@
           </td>
           <td>
             <div class="form-group">
-              <input type="text" class="form-control customBg" [(ngModel)]="items[i].Answer" name="answer{{i}}" id="answer{{i}}" required>
+              <input type="text" class="form-control customBg" [(ngModel)]="items[i].Answer" name="answer{{i}}" id="answer{{i}}"
+                required>
             </div>
           </td>
           <td>
             <div class="form-group">
-              <input type="text" class="form-control customBg" [(ngModel)]="items[i].Options" name="options{{i}}" id="options{{i}}" required>
+              <input type="text" class="form-control customBg" [(ngModel)]="items[i].Options" name="options{{i}}" id="options{{i}}"
+                required>
             </div>
           </td>
         </tr>

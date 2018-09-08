@@ -7,3 +7,19 @@
 .customBg {
     background-color: rgba(26, 26, 26, 0.08)
 }
+
+.alert-success {
+    opacity:1;
+    transition:opacity 500ms;
+}
+.alert-success.fadeOut {
+    opacity:0;
+}
+
+.alert-danger {
+    opacity:1;
+    transition:opacity 500ms;
+}
+.alert-danger.fadeOut {
+    opacity:0;
+}

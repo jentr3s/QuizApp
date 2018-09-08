@@ -31,6 +31,8 @@ export class ManageOptionsComponent implements OnInit {
   optionsForm: any
   indexNo: any
   selectedAll: boolean
+  showAlertSuccess: boolean = false
+  showAlertError: boolean = false
 
   constructor(private sharedService: SharedService,
     private router: Router,
@@ -88,7 +90,7 @@ export class ManageOptionsComponent implements OnInit {
     this.items = JSON.parse(result)
     for (let i = 0; i < this.items.length; i++) {
       this.items[i].Selected = false
-      this.items[i].QuestionTypeId = this.items[i].QuestionTypeId == 1 ? 'Multiple Choice' : 'Fill in the blank'
+      this.items[i].QuestionTypeId = this.items[i].QuestionTypeId === 1 ? 'Multiple Choice' : 'Fill in the blank'
       if (this.items[i].Options && this.items[i].Options !== null) {
         this.items[i].Options = this.items[i].Options
       }
@@ -117,7 +119,7 @@ export class ManageOptionsComponent implements OnInit {
   }
 
   removeOption() {
-    let newDataList = []
+    const newDataList = []
     this.selectedAll = false
 
     this.items.forEach(item => {
@@ -134,7 +136,7 @@ export class ManageOptionsComponent implements OnInit {
     const forInsert: any[] = []
 
     // Deep copy
-    let newItems = JSON.parse(JSON.stringify(this.items))
+    const newItems = JSON.parse(JSON.stringify(this.items))
 
     for (let i = 0; i < newItems.length; i++) {
       if (newItems[i].QuestionTypeId === 'Multiple Choice') {
@@ -150,9 +152,12 @@ export class ManageOptionsComponent implements OnInit {
       }
 
     }
+    let insertResult: any
+    let updateResult: any
+
     if (forInsert.length > 0) {
-      const insertResult = this.ipc.sendSync('postOptions', forInsert)
-      console.log(JSON.parse(insertResult))
+      const res = this.ipc.sendSync('postOptions', forInsert)
+      insertResult = JSON.parse(res)
     }
     if (forUpdate.length > 0) {
       for (let i = 0; i < forUpdate.length; i++) {
@@ -165,9 +170,26 @@ export class ManageOptionsComponent implements OnInit {
           Options: forUpdate[i].Options
         }
 
-        const updateResult = this.ipc.sendSync('putOptions', model)
-        console.log(JSON.parse(updateResult))
+        const res = this.ipc.sendSync('putOptions', model)
+        updateResult = JSON.parse(res)
       }
+    }
+
+    // First condition is if it has inserted and updated data
+    // Second condition if nothing has been inserted
+    if ((forInsert.length > 0 && forUpdate.length > 0 && insertResult && updateResult && insertResult !== 'error' && updateResult !== 'error') ||
+      (forInsert.length === 0 && forUpdate.length > 0 && updateResult && updateResult !== 'error')) {
+      this.showAlertSuccess = true
+      setTimeout(() => {
+        document.getElementById('fadeSuccess').className = 'fadeOut'
+        this.showAlertSuccess = false
+      }, 2500)
+    } else {
+      this.showAlertError = true
+      setTimeout(() => {
+        document.getElementById('fadeError').className = 'fadeOut'
+        this.showAlertError = false
+      }, 2500)
     }
   }
 
