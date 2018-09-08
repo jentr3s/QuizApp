@@ -90,8 +90,7 @@ export class ManageOptionsComponent implements OnInit {
       this.items[i].Selected = false
       this.items[i].QuestionTypeId = this.items[i].QuestionTypeId == 1 ? 'Multiple Choice' : 'Fill in the blank'
       if (this.items[i].Options && this.items[i].Options !== null) {
-        const options = JSON.parse(this.items[i].Options)
-        this.items[i].Options = options.toString()
+        this.items[i].Options = this.items[i].Options
       }
     }
   }
@@ -101,8 +100,8 @@ export class ManageOptionsComponent implements OnInit {
       Question: '',
       QuestionTypeId: '',
       Answer: '',
-      QuizId: '',
-      Options: ''
+      QuizId: this.quizId,
+      Options: null
     })
   }
   checkAll() {
@@ -131,8 +130,45 @@ export class ManageOptionsComponent implements OnInit {
   }
 
   updateOptions(items: any) {
+    const forUpdate: any[] = []
+    const forInsert: any[] = []
 
-    console.log(items)
+    // Deep copy
+    let newItems = JSON.parse(JSON.stringify(this.items))
+
+    for (let i = 0; i < newItems.length; i++) {
+      if (newItems[i].QuestionTypeId === 'Multiple Choice') {
+        newItems[i].QuestionTypeId = 1
+      } else {
+        newItems[i].QuestionTypeId = 2
+      }
+
+      if (newItems[i].Id) {
+        forUpdate.push(newItems[i])
+      } else {
+        forInsert.push(newItems[i])
+      }
+
+    }
+    if (forInsert.length > 0) {
+      const insertResult = this.ipc.sendSync('postOptions', forInsert)
+      console.log(JSON.parse(insertResult))
+    }
+    if (forUpdate.length > 0) {
+      for (let i = 0; i < forUpdate.length; i++) {
+        const model = {
+          Id: forUpdate[i].Id,
+          Question: forUpdate[i].Question,
+          QuestionTypeId: forUpdate[i].QuestionTypeId,
+          Answer: forUpdate[i].Answer,
+          QuizId: forUpdate[i].QuizId,
+          Options: forUpdate[i].Options
+        }
+
+        const updateResult = this.ipc.sendSync('putOptions', model)
+        console.log(JSON.parse(updateResult))
+      }
+    }
   }
 
 }

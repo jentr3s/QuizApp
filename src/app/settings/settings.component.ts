@@ -46,10 +46,10 @@ export class SettingsComponent implements OnInit {
     this.userInfo = JSON.parse(loggedInUser)
     this.loginBtnClick = true;
 
-    if (this.userInfo != null && this.userInfo !== 'error') {
+    if (this.userInfo.length > 0 && this.userInfo != null && this.userInfo !== 'error') {
       this.isLoggedIn = true
       this.sharedService.changeIsLoggedIn(true)
-      this.sharedService.changeLoggedInUserDetail(this.userInfo)
+      this.sharedService.changeLoggedInUserDetail(this.userInfo[0])
 
       this.loadQuizzes()
     } else {

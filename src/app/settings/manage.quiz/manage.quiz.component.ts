@@ -18,7 +18,13 @@ export class ManageQuizComponent implements OnInit {
   userInfo: any
   isCreate: boolean = false
   quizId: any
-  quiz: any
+  quiz: any = {
+    Id: null,
+    Name: null,
+    Description: null,
+    PreparedBy: null,
+    IsActive: false
+  }
 
   constructor(private sharedService: SharedService,
     private router: Router,
@@ -56,6 +62,18 @@ export class ManageQuizComponent implements OnInit {
     this.sharedService.changeLoggedInUserDetail(this.userInfo)
     this.router.navigate(['manageOptions'], routeExtras)
   }
+  // Creates Quiz
+  createQuiz(quiz) {
+    const quizModel = {
+      Name: quiz.Name,
+      Description: quiz.Description,
+      PreparedBy: quiz.PreparedBy,
+      IsActive: quiz.IsActive === true ? 1 : 0
+    }
+
+    const result = this.ipc.sendSync('postQuiz', quizModel)
+    console.log(JSON.parse(result))
+  }
 
   // Load Data
   loadQuizzes(id) {
@@ -78,18 +96,23 @@ export class ManageQuizComponent implements OnInit {
       IsActive: quiz.IsActive === true ? 1 : 0
     }
 
-    // For setting active quiz
-    if (quizModel.IsActive) {
-      const activeQuiz = this.ipc.sendSync('getActiveQuiz')
-      const parseQuiz = JSON.parse(activeQuiz)
+    if (this.isCreate) {
+      const result = this.ipc.sendSync('postQuiz', quizModel)
+      console.log(JSON.parse(result))
+    } else {
+      // For setting active quiz
+      if (quizModel.IsActive) {
+        const activeQuiz = this.ipc.sendSync('getActiveQuiz')
+        const parseQuiz = JSON.parse(activeQuiz)
 
-      if (parseQuiz.length > 0 && parseQuiz[0].Id !== this.quizId) {
-        return console.log('Unable to Update')
+        if (parseQuiz.length > 0 && parseQuiz[0].Id !== this.quizId) {
+          return console.log('Unable to Update')
+        }
       }
-    }
 
-    const result = this.ipc.sendSync('putQuiz', quizModel)
-    console.log(JSON.parse(result))
+      const result = this.ipc.sendSync('putQuiz', quizModel)
+      console.log(JSON.parse(result))
+    }
   }
 
 }

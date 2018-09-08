@@ -55,8 +55,12 @@ export class QuizComponent implements OnInit {
     const result = this.ipc.sendSync('getItems', quizId)
     this.items = JSON.parse(result)
     for (let i = 0; i < this.items.length; i++) {
-
-      this.items[i].Options = JSON.parse(this.items[i].Options)
+      let opt = JSON.parse(this.items[i].Options)
+      if (opt !== null) {
+        this.items[i].Options = opt.toString().split(',')
+      } else {
+        this.items[i].Options = null
+      }
     }
   }
 

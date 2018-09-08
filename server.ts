@@ -7,8 +7,8 @@ let win
 const docPath = app.getPath('documents')
 
 //Local connection only
-let knex = require("knex")({
-    client: "sqlite3",
+let knex = require('knex')({
+    client: 'sqlite3',
     connection: {
         filename: docPath + '/QuizAppDb/DbQuizApp'
     },
@@ -33,22 +33,22 @@ function createWindow() {
 
     ////////////////////////////// USER /////////////////////////////
     // Login
-    ipcMain.on("login", (event, arg) => {
+    ipcMain.on('login', (event, arg) => {
         let result = knex('Users').where({
             Username: arg.username,
             Password: arg.password
         }).select('Id', 'Name', 'Username', 'PermissionType')
-            .then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res[0])
-            })
-            .catch((err) => {
-                event.returnValue = JSON.stringify('error')
-            })
+        result.then((res) => {
+            // result is always an array
+            event.returnValue = JSON.stringify(res)
+        })
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        })
     })
 
     // Load users
-    ipcMain.on("getUsers", (event, arg) => {
+    ipcMain.on('getUsers', (event, arg) => {
         let result = knex.select('Name').from('Users')
         result.then((rows) => {
             win.webContents.send('users', rows)
@@ -61,7 +61,7 @@ function createWindow() {
 
     ////////////////////////////// QUIZZES /////////////////////////////
     // Load Quizzes
-    ipcMain.on("getQuizzes", (event, arg) => {
+    ipcMain.on('getQuizzes', (event, arg) => {
         if (arg === undefined) {
             let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
             result.then((quizzes) => {
@@ -74,7 +74,7 @@ function createWindow() {
     })
 
     // Load QuizByIsActive = true
-    ipcMain.on("getActiveQuiz", (event, arg) => {
+    ipcMain.on('getActiveQuiz', (event, arg) => {
         let result = knex('Quizzes').where({
             IsActive: 1,
         }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
@@ -88,7 +88,7 @@ function createWindow() {
     })
 
     // Load QuizById
-    ipcMain.on("getQuizById", (event, arg) => {
+    ipcMain.on('getQuizById', (event, arg) => {
         let result = knex('Quizzes').where({
             Id: arg,
         }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
@@ -102,7 +102,7 @@ function createWindow() {
     })
 
     // Load Quiz Result
-    ipcMain.on("getQuizResult", (event, arg) => {
+    ipcMain.on('getQuizResult', (event, arg) => {
         let results = knex('QuizResults').where({
             QuizId: arg
         }).select('Id', 'QuizId', 'StudentName', 'Result', 'Answers', 'Score', 'Items')
@@ -116,8 +116,19 @@ function createWindow() {
     })
 
     // Insert Quiz Result
-    ipcMain.on("postQuizResult", (event, arg) => {
-        let result = knex.insert(arg).into('QuizResults')
+    ipcMain.on('postQuizResult', async (event, arg) => {
+        let result = await knex.insert(arg).into('QuizResults')
+        result.then((id) => {
+            event.returnValue = JSON.stringify(id)
+        })
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        })
+    })
+
+    // Insert Quiz
+    ipcMain.on('postQuiz', async (event, arg) => {
+        let result = await knex.insert(arg).into('Quizzes');
         result.then((id) => {
             event.returnValue = JSON.stringify(id)
         })
@@ -127,7 +138,7 @@ function createWindow() {
     })
 
     // Update QuizById
-    ipcMain.on("putQuiz", (event, arg) => {
+    ipcMain.on('putQuiz', (event, arg) => {
         console.log(arg)
         let result = knex('Quizzes').where('Id', '=', arg.Id).update(arg)
         result.then((res) => {
@@ -141,7 +152,7 @@ function createWindow() {
 
     ////////////////////////////// ITEMS ///////////////////////////////////
     // Load Items
-    ipcMain.on("getItems", (event, arg) => {
+    ipcMain.on('getItems', (event, arg) => {
         let items = knex('Items').where({
             QuizId: arg
         }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', 'Options')
@@ -158,10 +169,21 @@ function createWindow() {
 
     ////////////////////////////// OPTION ///////////////////////////////////
     // Insert Options
-    ipcMain.on("postOptions", (event, arg) => {
-        let result = knex.insert(arg).into("Options")
-        result.then(function (id) {
-            win.webContents.send('insertedId', id)
+    ipcMain.on('postOptions', async (event, arg) => {
+        let result = await knex('Items').insert(arg)
+        result.then((id) => {
+            event.returnValue = JSON.stringify(id)
+        })
+        result.catch((err) => {
+            event.returnValue = JSON.stringify('error')
+        })
+    })
+
+    // Update Options
+    ipcMain.on('putOptions', (event, arg) => {
+        let result = knex('Items').where('Id', '=', arg.Id).update(arg)
+        result.then((id) => {
+            event.returnValue = JSON.stringify(id)
         })
         result.catch((err) => {
             event.returnValue = JSON.stringify('error')

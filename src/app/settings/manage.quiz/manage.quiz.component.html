@@ -1,11 +1,5 @@
-<!-- Create Quiz -->
-<div *ngIf="isLoggedIn && isCreate" class="bd-example">
-  <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
-  <button type="button" class="btn btn-warning btn-sm float-right" (click)="back()">Back</button>
-</div>
-
 <!-- Update Quiz -->
-<div *ngIf="isLoggedIn && !isCreate" class="bd-example">
+<div *ngIf="isLoggedIn" class="bd-example">
   <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
   <form (ngSubmit)="updateQuiz(quiz)">
     <div class="form-group">
@@ -25,18 +19,19 @@
 
     <div class="form-group">
       <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" [(ngModel)]="quiz.IsActive" name="isActive" id="isActive" [checked]="quiz.IsActive">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="quiz.IsActive" name="isActive" id="isActive"
+          [checked]="quiz.IsActive">
         <label class="custom-control-label" for="isActive">Active</label>
       </div>
     </div>
 
-    <div style="padding-bottom: 40px;">
+    <div *ngIf="!isCreate" style="padding-bottom: 40px;">
       <button type="button" class="btn btn-secondary btn-sm float-right" (click)="viewOptions(quiz.Id)">
         <i class="fas fa-pencil-alt" style="padding-right: 2px;"></i>
         Edit Options</button>
     </div>
     <div>
-      <button type="button" class="btn btn-danger btn-sm float-left">
+      <button type="button" class="btn btn-danger btn-sm float-left" *ngIf="!isCreate">
         <i class="fas fa-trash-alt" style="padding-right: 2px;"></i>
         Delete</button>
       <button type="submit" class="btn btn-success btn-sm float-right">
