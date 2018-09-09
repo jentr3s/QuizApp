@@ -177,6 +177,7 @@ export class ManageOptionsComponent implements OnInit {
 
     // First condition is if it has inserted and updated data
     // Second condition if nothing has been inserted
+    // tslint:disable-next-line:max-line-length
     if ((forInsert.length > 0 && forUpdate.length > 0 && insertResult && updateResult && insertResult !== 'error' && updateResult !== 'error') ||
       (forInsert.length === 0 && forUpdate.length > 0 && updateResult && updateResult !== 'error')) {
       this.showAlertSuccess = true

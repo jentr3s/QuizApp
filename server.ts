@@ -34,135 +34,162 @@ function createWindow() {
     ////////////////////////////// USER /////////////////////////////
     // Login
     ipcMain.on('login', (event, arg) => {
-        let result = knex('Users').where({
-            Username: arg.username,
-            Password: arg.password
-        }).select('Id', 'Name', 'Username', 'PermissionType')
-        result.then((res) => {
-            // result is always an array
-            event.returnValue = JSON.stringify(res)
-        })
-        result.catch((err) => {
+        try {
+            let result = knex('Users').where({
+                Username: arg.username,
+                Password: arg.password
+            }).select('Id', 'Name', 'Username', 'PermissionType')
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
             event.returnValue = JSON.stringify('error')
-        })
+        }
     })
 
     // Load users
     ipcMain.on('getUsers', (event, arg) => {
-        let result = knex.select('Name').from('Users')
-        result.then((rows) => {
-            win.webContents.send('users', rows)
-        })
-        result.catch((err) => {
+        try {
+            let result = knex.select('Name').from('Users')
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
+            console.log(ex)
             event.returnValue = JSON.stringify('error')
-        })
+        }
     })
     ////////////////////////////// END USER /////////////////////////////
 
     ////////////////////////////// QUIZZES /////////////////////////////
     // Load Quizzes
     ipcMain.on('getQuizzes', (event, arg) => {
-        if (arg === undefined) {
+        try {
             let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
-            result.then((quizzes) => {
-                event.returnValue = JSON.stringify(quizzes)
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
             })
-            result.catch((err) => {
-                event.returnValue = JSON.stringify('error')
-            })
+        } catch (ex) {
+            console.log(ex)
+            event.returnValue = JSON.stringify('error')
         }
     })
 
     // Load QuizByIsActive = true
     ipcMain.on('getActiveQuiz', (event, arg) => {
-        let result = knex('Quizzes').where({
-            IsActive: 1,
-        }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
-        result.then((quiz) => {
-            event.returnValue = JSON.stringify(quiz)
-        })
-        result.catch((err) => {
+        try {
+            let result = knex('Quizzes').where({
+                IsActive: 1,
+            }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
+            console.log(ex)
             event.returnValue = JSON.stringify('error')
-        })
+        }
 
     })
 
     // Load QuizById
     ipcMain.on('getQuizById', (event, arg) => {
-        let result = knex('Quizzes').where({
-            Id: arg,
-        }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
-        result.then((quiz) => {
-            event.returnValue = JSON.stringify(quiz)
-        })
-        result.catch((err) => {
-            event.returnValue = JSON.stringify('error')
-        })
+        try {
+            let result = knex('Quizzes').where({
+                Id: arg,
+            }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
 
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
+            console.log(ex)
+            event.returnValue = JSON.stringify('error')
+        }
     })
 
     // Load Quiz Result
     ipcMain.on('getQuizResult', (event, arg) => {
-        let results = knex('QuizResults').where({
-            QuizId: arg
-        }).select('Id', 'QuizId', 'StudentName', 'Result', 'Answers', 'Score', 'Items')
-        results.then((data) => {
+        try {
+            let results = knex('QuizResults').where({
+                QuizId: arg
+            }).select('Id', 'QuizId', 'StudentName', 'Result', 'Answers', 'Score', 'Items')
+
             // result is always an array
-            event.returnValue = JSON.stringify(data)
-        })
-        results.catch((err) => {
+            results.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+
+        } catch (ex) {
+            console.log(ex)
             event.returnValue = JSON.stringify('error')
-        })
+        }
     })
 
     // Insert Quiz Result
     ipcMain.on('postQuizResult', async (event, arg) => {
-        let result = await knex.insert(arg).into('QuizResults')
-        result.then((id) => {
-            event.returnValue = JSON.stringify(id)
-        })
-        result.catch((err) => {
+        try {
+            let result = await knex.insert(arg).into('QuizResults')
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
+            console.log(ex)
             event.returnValue = JSON.stringify('error')
-        })
+        }
     })
 
     // Insert Quiz
     ipcMain.on('postQuiz', async (event, arg) => {
-        let result = await knex.insert(arg).into('Quizzes');
-        result.then((id) => {
-            event.returnValue = JSON.stringify(id)
-        })
-        result.catch((err) => {
+        try {
+            let result = await knex.insert(arg).into('Quizzes');
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
+            console.log(ex)
             event.returnValue = JSON.stringify('error')
-        })
+        }
     })
 
     // Update QuizById
     ipcMain.on('putQuiz', (event, arg) => {
-        console.log(arg)
-        let result = knex('Quizzes').where('Id', '=', arg.Id).update(arg)
-        result.then((res) => {
-            event.returnValue = JSON.stringify(res)
-        })
-        result.catch((err) => {
+        try {
+            let result = knex('Quizzes').where('Id', '=', arg.Id).update(arg)
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
+            console.log(ex)
             event.returnValue = JSON.stringify('error')
-        })
+        }
     })
     ////////////////////////////// END QUIZZES /////////////////////////////
 
     ////////////////////////////// ITEMS ///////////////////////////////////
     // Load Items
     ipcMain.on('getItems', (event, arg) => {
-        let items = knex('Items').where({
-            QuizId: arg
-        }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', 'Options')
-        items.then((data) => {
+        try {
+            let items = knex('Items').where({
+                QuizId: arg
+            }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', 'Options')
             // result is always an array
-            event.returnValue = JSON.stringify(data)
-        })
-        items.catch((err) => {
+            items.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
+            console.log(ex)
             event.returnValue = JSON.stringify('error')
-        })
+        }
     })
 
     ////////////////////////////// END ITEMS ///////////////////////////////////
@@ -172,7 +199,11 @@ function createWindow() {
     ipcMain.on('postOptions', async (event, arg) => {
         try {
             let result = await knex('Items').insert(arg)
-            event.returnValue = JSON.stringify(result)
+
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify(ex)
@@ -181,13 +212,16 @@ function createWindow() {
 
     // Update Options
     ipcMain.on('putOptions', (event, arg) => {
-        let result = knex('Items').where('Id', '=', arg.Id).update(arg)
-        result.then((id) => {
-            event.returnValue = JSON.stringify(id)
-        })
-        result.catch((err) => {
-            event.returnValue = JSON.stringify('error')
-        })
+        try {
+            let result = knex('Items').where('Id', '=', arg.Id).update(arg)
+            result.then((res) => {
+                // result is always an array
+                event.returnValue = JSON.stringify(res)
+            })
+        } catch (ex) {
+            console.log(ex)
+            event.returnValue = JSON.stringify(ex)
+        }
     })
     ////////////////////////////// END OPTION ////////////////////////////////
 
