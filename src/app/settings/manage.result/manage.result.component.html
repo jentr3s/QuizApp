@@ -1,0 +1,45 @@
+<div class="bd-example">
+  <div>
+    <button type="button" class="btn btn-secondary btn-sm float-right"><i class="fas fa-print fa-lg"></i></button>
+    <button type="button" class="btn btn-secondary btn-sm float-right" (click)="back()">Back</button>
+  </div><br /><br />
+  <table class="table table-bordered table-sm" data-pagination="true" data-id-field="name" data-page-list="[5, 10, 25, 50, 100, ALL]"
+    data-page-size="5">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Student Name</th>
+        <th scope="col" style="text-align: center;">Result</th>
+        <th scope="col">Answers</th>
+        <th scope="col" style="text-align: center;">Score</th>
+        <th scope="col" style="text-align: center;">Items</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of pagedItems; let i=index">
+        <th scope="row" style="font-weight: bold;color: black;">{{(pager.currentPage - 1) * pager.pageSize + i +1}}</th>
+        <td>{{item.StudentName}}</td>
+        <td style="text-align: center;">
+          <i *ngIf="item.Result === 'Passed'" class="fas fa-check-circle" style="color: #339af0;"></i>
+          <i *ngIf="item.Result !== 'Passed'" class="fas fa-times-circle" style="color: #ff6b6b;"></i>
+        </td>
+        <td class="trim-info" data-toggle="tooltip" data-placement="top" title="{{item.Answers}}">{{item.Answers}}</td>
+        <td style="text-align: center;">{{item.Score}}</td>
+        <td style="text-align: center;">{{item.Items}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- pager -->
+  <nav>
+    <ul class="pagination pagination-sm float-right" *ngIf="pager.pages && pager.pages.length">
+      <li class="page-item"><a class="page-link" (click)="setPage(1)">First</a></li>
+      <li class="page-item"><a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a></li>
+      <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+        <a class="page-link" (click)="setPage(page)">{{page}}</a>
+      </li>
+      <li class="page-item"><a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a></li>
+      <li class="page-item"><a class="page-link" (click)="setPage(pager.totalPages)">Last</a></li>
+    </ul>
+  </nav>
+</div>

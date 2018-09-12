@@ -1,24 +1,24 @@
 <div *ngIf="!isLoggedIn" class="centerLogin">
   <div class="card bg-light mb-6 loginCard">
     <div class="card-header">
-      <legend>Please Login</legend>
+      <h3>Please Login</h3>
     </div>
-    <div class="errMsg" *ngIf="userInfo != error">Username or Password is invalid!</div>
+    <div class="errMsg" *ngIf="userInfo != error && loginBtnClick">Username or Password is invalid!</div>
     <div class="card-body">
       <form (ngSubmit)="login()">
         <fieldset>
           <div class="form-group">
             <label for="txtUsername">Username</label>
-            <input type="text" [(ngModel)]="username" name="username" class="form-control" id="txtUsername">
+            <input type="text" [(ngModel)]="username" name="username" class="form-control customBg" id="txtUsername">
           </div>
           <div class="form-group">
             <label for="txtPassword">Password</label>
-            <input type="password" [(ngModel)]="password" name="password" class="form-control" id="txtPassword">
+            <input type="password" [(ngModel)]="password" name="password" class="form-control customBg" id="txtPassword">
           </div>
 
           <div class="buttons">
-            <button type="submit" class="btn btn-primary" (click)="login()">Login</button>
-            <button type="button" class="btn btn-primary" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm" (click)="login()">Login</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="cancel()">Cancel</button>
           </div>
         </fieldset>
       </form>
@@ -33,7 +33,7 @@
   <hr class="my-4">
 
   <form>
-    <button type="button" class="btn btn-warning pull-right" (click)="logout()">Logout</button>
+    <button type="button" class="btn btn-warning btn-sm float-right" (click)="logout()">Logout</button>
   </form>
   <div class="row">
     <div class="col">
@@ -42,14 +42,18 @@
           <h3 class="card-title">Quizzes</h3>
 
           <ul class="list-group">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizList">
-              <div class="d-flex w-100 justify-content-between">
+            <a class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizList"
+              style="cursor:pointer;">
+              <div class="d-flex w-100 justify-content-between" (click)="viewQuiz(item.Quiz.Id)">
                 {{item.Quiz.Name}}
                 <small class="badge badge-primary badge-pill" title="no. of items">{{item.ItemCount}}</small>
-              
+
               </div>
             </a>
           </ul>
+          <br />
+          <button type="button" class="btn btn-secondary btn-sm float-right" (click)="addQuiz()"><i class="fas fa-plus"></i>
+            Add</button>
 
         </div>
       </div>
@@ -60,8 +64,9 @@
           <h3 class="card-title">Quiz Results</h3>
 
           <ul class="list-group">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizResult">
-              <div class="d-flex justify-content-between">
+            <a class="list-group-item list-group-item-action flex-column align-items-start table table-striped" *ngFor="let item of quizResult"
+              style="cursor:pointer;">
+              <div class="d-flex justify-content-between" (click)="viewResult(item.Quiz.Id)">
                 {{item.Quiz.Name}}
                 <small class="badge badge-primary badge-pill" title="no. of students">{{item.StudentCount}}</small>
               </div>

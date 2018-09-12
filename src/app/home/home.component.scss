@@ -13,3 +13,17 @@
   border-radius: unset;
   background:transparent;
 }
+
+.keepcentered {
+  position:    absolute;
+  left:        45%;        /* Start with top left in the center */
+  top:         70%;
+  width:       245px;      /* The fixed width... */
+  height:      100px;      /* ...and height */
+  margin-left: -60px;     /* Shift over half the width */
+  margin-top:  -50px;      /* Shift up half the height */
+}
+
+.customBg {
+  background-color: rgba(26, 26, 26, 0.08)
+}
