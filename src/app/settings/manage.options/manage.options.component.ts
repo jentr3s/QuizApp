@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core'
 
 import { SharedService } from '../../shared.service'
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
-import { PagerService } from '../../_shared';
-import { NgForm } from '@angular/forms';
+import { PagerService } from '../../_shared'
 
 declare let electron: any
 
@@ -135,6 +134,7 @@ export class ManageOptionsComponent implements OnInit {
     const res = this.ipc.sendSync('deleteOptionByQuizId', this.quizId)
 
     console.log(res)
+    this.loadOptions(this.quizId)
   }
 
   updateOptions(items: any) {
@@ -185,6 +185,7 @@ export class ManageOptionsComponent implements OnInit {
     // Second condition if nothing has been inserted
     // tslint:disable-next-line:max-line-length
     if (updateResult !== 'error' && insertResult !== 'error') {
+      this.loadOptions(this.quizId)
       this.showAlertSuccess = true
       setTimeout(() => {
         document.getElementById('fadeSuccess').className = 'fadeOut'
