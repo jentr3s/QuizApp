@@ -75,6 +75,19 @@ export class ManageQuizComponent implements OnInit {
 
     const result = this.ipc.sendSync('postQuiz', quizModel)
     console.log(JSON.parse(result))
+    if (result && result !== 'error') {
+      this.showAlertSuccess = true
+      setTimeout(() => {
+        document.getElementById('fadeSuccess').className = 'fadeOut'
+        this.showAlertSuccess = false
+      }, 2500)
+    } else {
+      this.showAlertError = true
+      setTimeout(() => {
+        document.getElementById('fadeError').className = 'fadeOut'
+        this.showAlertError = false
+      }, 2500)
+    }
   }
 
   // Delete Quiz

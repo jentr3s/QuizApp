@@ -119,16 +119,22 @@ export class ManageOptionsComponent implements OnInit {
   }
 
   removeOption() {
-    const newDataList = []
     this.selectedAll = false
 
     this.items.forEach(item => {
-      if (!item.Selected) {
-        newDataList.push(item)
+      if (item.Selected) {
+        const res = this.ipc.sendSync('deleteOptions', item.Id)
+
+        console.log(res)
+        this.back()
       }
     })
+  }
 
-    this.items = newDataList;
+  removeAll() {
+    const res = this.ipc.sendSync('deleteOptionByQuizId', this.quizId)
+
+    console.log(res)
   }
 
   updateOptions(items: any) {

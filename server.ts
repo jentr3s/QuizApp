@@ -245,6 +245,19 @@ function createWindow() {
             event.returnValue = JSON.stringify('error')
         }
     })
+
+    //Delete Options under Quiz
+    ipcMain.on('deleteOptions', (event, arg) => {
+        try {
+            knex('Items').where('Id', arg).del()
+                .then((res) => {
+                    event.returnValue = JSON.stringify(res)
+                })
+        } catch (ex) {
+            console.log(ex)
+            event.returnValue = JSON.stringify('error')
+        }
+    })
     ////////////////////////////// END OPTION ////////////////////////////////
 
     win.on('closed', () => {
