@@ -3,7 +3,6 @@ import { SharedService } from '../../shared.service'
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
 
 declare let electron: any
-const { dialog } = electron.remote
 
 @Component({
   selector: 'app-manage.quiz',
@@ -78,6 +77,15 @@ export class ManageQuizComponent implements OnInit {
     console.log(JSON.parse(result))
   }
 
+  // Delete Quiz
+  deleteQuiz(id) {
+    const result = this.ipc.sendSync('deleteQuiz', id)
+    console.log(JSON.parse(result))
+    const deleteOptions = this.ipc.sendSync('deleteOptionByQuizId', id)
+    console.log(JSON.parse(deleteOptions))
+    this.back()
+  }
+
   // Load Data
   loadQuizzes(id) {
     const quiz = this.ipc.sendSync('getQuizById', id)
@@ -91,25 +99,25 @@ export class ManageQuizComponent implements OnInit {
 
   // Update Quiz
   updateQuiz(quiz) {
-    const quizModel = {
-      Id: this.quizId,
-      Name: quiz.Name,
-      Description: quiz.Description,
-      PreparedBy: quiz.PreparedBy,
-      IsActive: quiz.IsActive === true ? 1 : 0
-    }
-
     if (this.isCreate) {
-      const result = this.ipc.sendSync('postQuiz', quizModel)
-      console.log(JSON.parse(result))
+      this.createQuiz(quiz)
     } else {
+      const quizModel = {
+        Id: this.quizId,
+        Name: quiz.Name,
+        Description: quiz.Description,
+        PreparedBy: quiz.PreparedBy,
+        IsActive: quiz.IsActive === true ? 1 : 0
+      }
+
+
       // For setting active quiz
       if (quizModel.IsActive) {
         const activeQuiz = this.ipc.sendSync('getActiveQuiz')
         const parseQuiz = JSON.parse(activeQuiz)
 
         if (parseQuiz.length > 0 && parseQuiz[0].Id !== this.quizId) {
-          return console.log('Unable to Update')
+          return console.log('Unable to Update. Another quiz has been active')
         }
       }
 

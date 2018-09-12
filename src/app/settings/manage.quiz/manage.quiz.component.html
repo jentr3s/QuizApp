@@ -39,7 +39,7 @@
         Edit Options</button>
     </div>
     <div>
-      <button type="button" class="btn btn-danger btn-sm float-left" *ngIf="!isCreate">
+      <button type="button" class="btn btn-danger btn-sm float-left" *ngIf="!isCreate" (click)="deleteQuiz(quiz.Id)">
         <i class="fas fa-trash-alt" style="padding-right: 2px;"></i>
         Delete</button>
       <button type="submit" class="btn btn-success btn-sm float-right">

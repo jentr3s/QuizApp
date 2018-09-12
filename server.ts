@@ -35,14 +35,14 @@ function createWindow() {
     // Login
     ipcMain.on('login', (event, arg) => {
         try {
-            let result = knex('Users').where({
+            knex('Users').where({
                 Username: arg.username,
                 Password: arg.password
             }).select('Id', 'Name', 'Username', 'PermissionType')
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             event.returnValue = JSON.stringify('error')
         }
@@ -51,11 +51,11 @@ function createWindow() {
     // Load users
     ipcMain.on('getUsers', (event, arg) => {
         try {
-            let result = knex.select('Name').from('Users')
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+            knex.select('Name').from('Users')
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify('error')
@@ -67,11 +67,11 @@ function createWindow() {
     // Load Quizzes
     ipcMain.on('getQuizzes', (event, arg) => {
         try {
-            let result = knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+            knex.select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive').from('Quizzes')
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify('error')
@@ -81,13 +81,13 @@ function createWindow() {
     // Load QuizByIsActive = true
     ipcMain.on('getActiveQuiz', (event, arg) => {
         try {
-            let result = knex('Quizzes').where({
+            knex('Quizzes').where({
                 IsActive: 1,
             }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify('error')
@@ -98,14 +98,13 @@ function createWindow() {
     // Load QuizById
     ipcMain.on('getQuizById', (event, arg) => {
         try {
-            let result = knex('Quizzes').where({
+            knex('Quizzes').where({
                 Id: arg,
             }).select('Id', 'Name', 'Description', 'PreparedBy', 'IsActive')
-
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify('error')
@@ -115,15 +114,13 @@ function createWindow() {
     // Load Quiz Result
     ipcMain.on('getQuizResult', (event, arg) => {
         try {
-            let results = knex('QuizResults').where({
+            knex('QuizResults').where({
                 QuizId: arg
             }).select('Id', 'QuizId', 'StudentName', 'Result', 'Answers', 'Score', 'Items')
-
-            // result is always an array
-            results.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
 
         } catch (ex) {
             console.log(ex)
@@ -134,11 +131,11 @@ function createWindow() {
     // Insert Quiz Result
     ipcMain.on('postQuizResult', async (event, arg) => {
         try {
-            let result = await knex.insert(arg).into('QuizResults')
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+            await knex.insert(arg).into('QuizResults')
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify('error')
@@ -148,11 +145,11 @@ function createWindow() {
     // Insert Quiz
     ipcMain.on('postQuiz', async (event, arg) => {
         try {
-            let result = await knex.insert(arg).into('Quizzes');
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+            await knex.insert(arg).into('Quizzes')
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify('error')
@@ -162,11 +159,25 @@ function createWindow() {
     // Update QuizById
     ipcMain.on('putQuiz', (event, arg) => {
         try {
-            let result = knex('Quizzes').where('Id', '=', arg.Id).update(arg)
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+            knex('Quizzes').where('Id', '=', arg.Id).update(arg)
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
+        } catch (ex) {
+            console.log(ex)
+            event.returnValue = JSON.stringify('error')
+        }
+    })
+
+    //Delete Quiz
+    ipcMain.on('deleteQuiz', (event, arg) => {
+        try {
+            knex('Quizzes').where('Id', arg).del()
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify('error')
@@ -178,14 +189,13 @@ function createWindow() {
     // Load Items
     ipcMain.on('getItems', (event, arg) => {
         try {
-            let items = knex('Items').where({
+            knex('Items').where({
                 QuizId: arg
             }).select('Id', 'Question', 'QuestionTypeId', 'Answer', 'QuizId', 'Options')
-            // result is always an array
-            items.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify('error')
@@ -198,12 +208,11 @@ function createWindow() {
     // Insert Options
     ipcMain.on('postOptions', async (event, arg) => {
         try {
-            let result = await knex('Items').insert(arg)
-
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+            await knex('Items').insert(arg)
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify(ex)
@@ -213,14 +222,27 @@ function createWindow() {
     // Update Options
     ipcMain.on('putOptions', (event, arg) => {
         try {
-            let result = knex('Items').where('Id', '=', arg.Id).update(arg)
-            result.then((res) => {
-                // result is always an array
-                event.returnValue = JSON.stringify(res)
-            })
+            knex('Items').where('Id', '=', arg.Id).update(arg)
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
         } catch (ex) {
             console.log(ex)
             event.returnValue = JSON.stringify(ex)
+        }
+    })
+
+    //Delete Options under Quiz
+    ipcMain.on('deleteOptionByQuizId', (event, arg) => {
+        try {
+            knex('Items').where('QuizId', arg).del()
+                .then((res) => {
+                    event.returnValue = JSON.stringify(res)
+                })
+        } catch (ex) {
+            console.log(ex)
+            event.returnValue = JSON.stringify('error')
         }
     })
     ////////////////////////////// END OPTION ////////////////////////////////
