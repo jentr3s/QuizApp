@@ -1,0 +1,55 @@
+<!-- Update Quiz -->
+<div *ngIf="isLoggedIn" class="bd-example">
+  <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
+
+  <div class="alert alert-dismissible alert-success" id="fadeSuccess" *ngIf="showAlertCreateSuccess">
+    <strong>Successfully saved quiz</strong>
+  </div>
+  <div class="alert alert-dismissible alert-success" id="fadeSuccess" *ngIf="showAlertSuccess">
+    <strong>Successfully saved quiz</strong>
+  </div>
+  <div class="alert alert-dismissible alert-danger" id="fadeError" *ngIf="showAlertError">
+    <strong>Oh snap!</strong> Change a few things up and try submitting again.
+  </div>
+
+  <form (ngSubmit)="updateQuiz(quiz)">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control customBg" [(ngModel)]="quiz.Name" name="name" id="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="desc">Description</label>
+      <input type="text" class="form-control customBg" [(ngModel)]="quiz.Description" name="desc" id="desc" required>
+    </div>
+
+    <div class="form-group">
+      <label for="prep">Prepared By</label>
+      <input type="text" class="form-control customBg" [(ngModel)]="quiz.PreparedBy" name="prep" id="prep" required>
+    </div>
+
+    <div class="form-group">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="quiz.IsActive" name="isActive" id="isActive"
+          [checked]="quiz.IsActive">
+        <label class="custom-control-label" for="isActive">Active</label>
+      </div>
+    </div>
+
+    <div *ngIf="!isCreate" style="padding-bottom: 40px;">
+      <button type="button" class="btn btn-secondary btn-sm float-right" (click)="viewOptions(quiz.Id)">
+        <i class="fas fa-pencil-alt" style="padding-right: 2px;"></i>
+        Edit Options</button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-danger btn-sm float-left" *ngIf="!isCreate" (click)="deleteQuiz(quiz.Id)">
+        <i class="fas fa-trash-alt" style="padding-right: 2px;"></i>
+        Delete</button>
+      <button type="submit" class="btn btn-success btn-sm float-right">
+        <i class="fas fa-save" style="padding-right: 2px;"></i>
+        Submit</button>
+      <button type="button" class="btn btn-secondary btn-sm float-right" (click)="back()">Cancel</button>
+    </div>
+  </form>
+
+</div>
