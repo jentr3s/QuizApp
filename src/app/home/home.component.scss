@@ -1,9 +1,24 @@
 .bg {
-  // background: url('assets/icons/quizImage.jpg') no-repeat center center;
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 100%;
+	
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+	
+  /* Set up positioning */
   position: fixed;
-  top:0;
-  left:0;
-  z-index: -1;
+  top: 0;
+  left: 0;
+  background-repeat: no-repeat, repeat;
+  background: 
+    // linear-gradient(purple 0%, red 90%), 
+    // linear-gradient(to right, purple 0%, yellow 90%), 
+    // url('../../assets/icons/quizImage2.jpg'),
+    url('../../assets/icons/quizImage2.jpg');
+  // background-blend-mode: screen, difference, lighten;
+  background-size: cover;
 }
 
 .jumbotron {
