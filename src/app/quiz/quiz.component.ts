@@ -55,13 +55,32 @@ export class QuizComponent implements OnInit {
     const result = this.ipc.sendSync('getItems', quizId)
     this.items = JSON.parse(result)
     for (let i = 0; i < this.items.length; i++) {
-      const opt = JSON.parse(this.items[i].Options)
+      const opt = this.items[i].Options
       if (opt !== null) {
         this.items[i].Options = opt.toString().split(',')
       } else {
         this.items[i].Options = null
       }
     }
+
+    this.shuffleItems(this.items)
+  }
+
+  shuffleItems(items: any) {
+    let m = items.length, t, i;
+
+    // While there remain elements to shuffle
+    while (m) {
+      // Pick a remaining element…
+      i = Math.floor(Math.random() * m--);
+
+      // And swap it with the current element.
+      t = items[m];
+      items[m] = items[i];
+      items[i] = t;
+    }
+
+    return items;
   }
 
   next() {
