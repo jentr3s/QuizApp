@@ -165,21 +165,23 @@ export class QuizComponent implements OnInit {
 
   saveResult() {
     let res: string = null
-    let id: string = null
     if (this.passed) {
       res = 'Passed'
     } else { res = 'Failed' }
 
+    // Sort array base on Id
+    let sortedAns = this.answers.sort((a, b) => { return a.itemId - b.itemId })
+
     const insertQuizResult = {
       QuizId: this.quiz.Id,
       StudentName: this.studentName,
-      Result: res, Answers: JSON.stringify(this.answers),
+      Result: res, Answers: JSON.stringify(sortedAns),
       Score: this.score,
       Items: this.items.length
     }
 
     const result = this.ipc.sendSync('postQuizResult', insertQuizResult)
-    id = JSON.parse(result)
+    console.log(result)
   }
 
   back() {
