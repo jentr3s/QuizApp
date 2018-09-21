@@ -61,6 +61,20 @@ function createWindow() {
             event.returnValue = JSON.stringify('error')
         }
     })
+
+    // Update UserById
+    ipcMain.on('putUser', (event, arg) => {
+        try {
+            knex('Users').where('Id', '=', arg.Id).update(arg)
+                .then((res) => {
+                    // result is always an array
+                    event.returnValue = JSON.stringify(res)
+                })
+        } catch (ex) {
+            console.log(ex)
+            event.returnValue = JSON.stringify('error')
+        }
+    })
     ////////////////////////////// END USER /////////////////////////////
 
     ////////////////////////////// QUIZZES /////////////////////////////

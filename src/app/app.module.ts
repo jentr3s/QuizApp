@@ -16,6 +16,7 @@ import { ManageResultComponent } from './settings/manage.result/manage.result.co
 
 import { PagerService } from './_shared/index';
 import { ManageOptionsComponent } from './settings/manage.options/manage.options.component';
+import { ManageUserComponent } from './settings/manage.user/manage.user.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ManageOptionsComponent } from './settings/manage.options/manage.options
     ManageQuizComponent,
     ManageResultComponent,
     ManageOptionsComponent,
+    ManageUserComponent,
   ],
   imports: [
     BrowserModule,

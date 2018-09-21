@@ -7,6 +7,7 @@ import { QuizComponent } from './quiz/quiz.component';
 import { ManageQuizComponent } from './settings/manage.quiz/manage.quiz.component';
 import { ManageResultComponent } from './settings/manage.result/manage.result.component';
 import { ManageOptionsComponent } from './settings/manage.options/manage.options.component';
+import { ManageUserComponent } from './settings/manage.user/manage.user.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'manageOptions',
     component: ManageOptionsComponent
+  },
+  {
+    path: 'manageUser',
+    component: ManageUserComponent
   }
 ];
 

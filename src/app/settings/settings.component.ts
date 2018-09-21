@@ -81,6 +81,11 @@ export class SettingsComponent implements OnInit {
     this.router.navigate(['manageQuiz'], routeExtras)
   }
 
+  viewUser() {
+    this.sharedService.changeLoggedInUserDetail(this.userInfo)
+    this.router.navigate(['manageUser'])
+  }
+
   viewResult(id) {
     const routeExtras: NavigationExtras = {
       queryParams: {

@@ -1,0 +1,44 @@
+<!-- Logged In users Page -->
+<div class="jumbotron" *ngIf="isLoggedIn">
+  <h1 class="display-3">Hello, {{ userInfo.Name }}!</h1>
+
+  <div class="alert alert-dismissible alert-success" id="fadeSuccess" *ngIf="showAlertSuccess">
+    <strong>Successfully updated your info</strong>
+  </div>
+  <div class="alert alert-dismissible alert-danger" id="fadeError" *ngIf="showAlertError">
+    <strong>Oh snap!</strong> Change a few things up and try submitting again.
+  </div>
+
+  <form (ngSubmit)="updateUser(userInfo)">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control customBg" [(ngModel)]="userInfo.Name" name="name" id="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Username</label>
+      <input type="text" class="form-control customBg" [(ngModel)]="userInfo.Username" name="uname" id="uname" required>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Permission Type</label>
+      <select class="custom-select customBg" [(ngModel)]="userInfo.PermissionType" name="permissionType">
+        <option *ngFor="let type of permissionTypes" [selected]="type.value == userInfo.PermissionType">
+          {{type.value}}
+        </option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-success btn-sm float-right">
+        <i class="fas fa-save" style="padding-right: 2px;"></i>
+        Submit</button>
+      <button type="button" class="btn btn-secondary btn-sm float-right" (click)="back()">Cancel</button>
+    </div>
+  </form>
+
+  <button type="button" class="btn btn-secondary btn-sm float-left" *ngIf="!isCreate" (click)="addUser()">
+    <i class="fas fa-plus" style="padding-right: 2px;"></i>
+    Add Admin</button>
+</div>
+

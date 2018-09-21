@@ -33,7 +33,11 @@
   <hr class="my-4">
 
   <form>
-    <button type="button" class="btn btn-warning btn-sm float-right" (click)="logout()">Logout</button>
+    <div>
+      <button type="button" class="btn btn-secondary btn-sm float-right" (click)="viewUser()"><i class="fas fa-users-cog"></i>
+        Manage User</button><br /><br />
+      <button type="button" class="btn btn-warning btn-sm float-right" (click)="logout()">Logout</button>
+    </div>
   </form>
   <div class="row">
     <div class="col">
@@ -77,5 +81,4 @@
       </div>
     </div>
   </div>
-
 </div>
